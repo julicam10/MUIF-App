@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'screens/inicio_sesion.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -7,14 +9,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
+      debugShowCheckedModeBanner: false,
+      home: InicioSesion(),
+      theme: ThemeData(
+        // primaryColor: const Color(0xFF0E2045),
+        colorScheme: const ColorScheme.highContrastLight(
+          primary: Color(0xFF0E2045),
+          secondary: Color(0xFFFFD841),
+          background: Colors.white,
         ),
       ),
     );
