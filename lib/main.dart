@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'screens/inicio_sesion.dart';
+import 'package:muif_app/screens/screens.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,9 +9,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      home: InicioSesion(),
+      initialRoute: InicioSesionPage.routeName,
+      routes: {
+        InicioSesionPage.routeName: (_) => const InicioSesionPage(),
+        RecuperarContrasenaPage.routeName: (_) =>
+            const RecuperarContrasenaPage(),
+        RegistroPage.routeName: (_) => const RegistroPage(),
+      },
       theme: ThemeData(
-        // primaryColor: const Color(0xFF0E2045),
         colorScheme: const ColorScheme.highContrastLight(
           primary: Color(0xFF0E2045),
           secondary: Color(0xFFFFD841),

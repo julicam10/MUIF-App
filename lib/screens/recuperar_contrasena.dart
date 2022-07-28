@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import 'inicio_sesion.dart';
+import 'package:muif_app/models/utilities.dart';
+import 'package:muif_app/widgets/widgets.dart';
 
 class RecuperarContrasenaPage extends StatefulWidget {
-  RecuperarContrasenaPage({Key? key}) : super(key: key);
+  const RecuperarContrasenaPage({Key? key}) : super(key: key);
+  static const String routeName = 'Recuperar_Contraseña';
 
   @override
   State<RecuperarContrasenaPage> createState() =>
       _RecuperarContrasenaPageState();
 }
 
-String email = '';
-
 class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
+  String email = '';
   final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -70,14 +70,31 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                   ),
                 ),
               ),
-              EmailWidget(
-                emailController: emailController,
-                colorHint: Colors.white,
-                colorLabel: Colors.white,
-                colorIcon: Colors.white,
-                colorCursor: Colors.white,
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+                child: EmailWidget(
+                  emailController: emailController,
+                  colorHint: Colors.white,
+                  colorLabel: Colors.white,
+                  colorIcon: Colors.white,
+                  colorCursor: Colors.white,
+                  textStyle: Colors.white,
+                ),
               ),
-              // TODO: Optimizar el boton
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 30, top: 210),
+                child: Center(
+                  child: Hero(
+                    tag: 'boton',
+                    child: BotonWidget(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      textColor: Theme.of(context).colorScheme.primary,
+                      text: 'Enviar correo',
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

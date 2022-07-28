@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:muif_app/models/utilities.dart';
+import 'package:muif_app/widgets/widgets.dart';
+
 class RegistroPage extends StatefulWidget {
-  RegistroPage({Key? key}) : super(key: key);
+  const RegistroPage({Key? key}) : super(key: key);
+  static const String routeName = 'Registrarse';
 
   @override
   State<RegistroPage> createState() => RegistroPageState();

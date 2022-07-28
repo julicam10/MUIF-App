@@ -1,22 +1,24 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import 'recuperar_contrasena.dart';
-import 'registro.dart';
+import 'package:muif_app/screens/screens.dart';
+import 'package:muif_app/widgets/widgets.dart';
 
-class InicioSesion extends StatefulWidget {
-  InicioSesion({Key? key}) : super(key: key);
+import 'package:muif_app/models/utilities.dart';
+
+class InicioSesionPage extends StatefulWidget {
+  const InicioSesionPage({Key? key}) : super(key: key);
+  static const String routeName = 'Iniciar_Sesion';
 
   @override
-  State<InicioSesion> createState() => _InicioSesionState();
+  State<InicioSesionPage> createState() => _InicioSesionPageState();
 }
 
 String email = '';
 String password = '';
 bool selectedValue = true;
 
-class _InicioSesionState extends State<InicioSesion> {
+class _InicioSesionPageState extends State<InicioSesionPage> {
   final scaffolKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -57,10 +59,11 @@ class _InicioSesionState extends State<InicioSesion> {
                 ),
                 EmailWidget(
                   emailController: emailController,
-                  colorHint: Colors.black,
-                  colorLabel: Colors.black,
-                  colorIcon: Colors.black,
-                  colorCursor: Colors.black,
+                  colorHint: Theme.of(context).colorScheme.onSecondary,
+                  colorLabel: Colors.grey.shade600,
+                  colorIcon: Theme.of(context).colorScheme.onSecondary,
+                  colorCursor: Colors.grey.shade600,
+                  textStyle: Theme.of(context).colorScheme.onSecondary,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 30, top: 25),
@@ -110,11 +113,9 @@ class _InicioSesionState extends State<InicioSesion> {
                       children: <InlineSpan>[
                         TextSpan(
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        RecuperarContrasenaPage(),
-                                  ),
+                            ..onTap = () => Navigator.pushNamed(
+                                  context,
+                                  RecuperarContrasenaPage.routeName,
                                 ),
                           text: 'Recuperar contraseña',
                           style: GoogleFonts.sourceSerifPro(
@@ -130,20 +131,13 @@ class _InicioSesionState extends State<InicioSesion> {
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 30, top: 25),
                   child: Center(
-                    child: Container(
-                      height: 50,
-                      width: 270,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: Theme.of(context).colorScheme.primary,
-                          primary: Theme.of(context).colorScheme.secondary,
-                          textStyle: GoogleFonts.sourceSerifPro(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        child: const Text('Iniciar sesión'),
-                        onPressed: () {},
+                    child: Hero(
+                      tag: 'boton',
+                      child: BotonWidget(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
+                        textColor: Theme.of(context).colorScheme.primary,
+                        text: 'Iniciar sesión',
                       ),
                     ),
                   ),
@@ -161,10 +155,9 @@ class _InicioSesionState extends State<InicioSesion> {
                         children: <InlineSpan>[
                           TextSpan(
                             recognizer: TapGestureRecognizer()
-                              ..onTap = () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => RegistroPage(),
-                                    ),
+                              ..onTap = () => Navigator.pushNamed(
+                                    context,
+                                    RegistroPage.routeName,
                                   ),
                             text: ' registrate',
                             style: GoogleFonts.sourceSerifPro(
@@ -182,52 +175,6 @@ class _InicioSesionState extends State<InicioSesion> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class EmailWidget extends StatelessWidget {
-  const EmailWidget({
-    Key? key,
-    required this.emailController,
-    required this.colorHint,
-    required this.colorLabel,
-    required this.colorIcon,
-    required this.colorCursor,
-  }) : super(key: key);
-
-  final TextEditingController emailController;
-  final Color colorHint;
-  final Color colorLabel;
-  final Color colorIcon;
-  final Color colorCursor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 30, top: 25),
-      child: TextFormField(
-        controller: emailController,
-        keyboardType: TextInputType.emailAddress,
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          focusColor: Colors.white,
-          icon: Icon(Icons.alternate_email_outlined, color: colorIcon),
-          hintText: 'correo@ejemplo.com',
-          labelText: 'Correo electrónico',
-          suffixIconColor: Colors.white,
-          hintStyle: TextStyle(color: colorLabel),
-          labelStyle: TextStyle(color: colorHint),
-        ),
-        onSaved: (val) => email = val!,
-        validator: (val) {
-          if (!val!.contains('@') || !val.contains('.')) {
-            return 'Invalid Email';
-          } else {
-            return null;
-          }
-        },
       ),
     );
   }
