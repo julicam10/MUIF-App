@@ -1,5 +1,4 @@
-# muif_app
-
+# MUIF APP
 A new Flutter project.
 
 ## Getting Started
