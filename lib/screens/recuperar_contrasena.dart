@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
 class RecuperarContrasenaPage extends StatefulWidget {
@@ -21,53 +19,36 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         elevation: 0.0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).colorScheme.background,
-            size: 40.0,
-          ),
-        ),
+        leading:
+            BackArrowButton(color: Theme.of(context).colorScheme.background),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                child: Text(
-                  'MUIF APP',
-                  style: GoogleFonts.nunito(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+              const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                  child: TitleText(
+                    text: 'MUIF APP',
+                    size: 35.0,
                     color: Colors.white,
-                  ),
-                ),
-              ),
+                  )),
+              Padding(
+                  padding:
+                      const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                  child: TitleText(
+                      text: 'Recupera tu contraseña',
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: 30)),
               Padding(
                 padding:
                     const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                child: Text(
-                  'Recupera tu contraseña',
-                  style: GoogleFonts.nunito(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                child: Text(
-                  'Ingresa el correo electrónico con el que te registraste, para poder recuperar tu contraseña.',
-                  style: GoogleFonts.sourceSerifPro(
-                    fontSize: 18,
-                    color: Theme.of(context).colorScheme.background,
-                  ),
+                child: NormalText(
+                  text:
+                      'Ingresa el correo electrónico con el que te registraste, para poder recuperar tu contraseña.',
+                  size: 18,
+                  color: Theme.of(context).colorScheme.background,
                 ),
               ),
               Padding(
@@ -83,14 +64,17 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 30, top: 210),
+                padding: const EdgeInsets.only(top: 195),
                 child: Center(
                   child: Hero(
                     tag: 'boton',
-                    child: BotonWidget(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      textColor: Theme.of(context).colorScheme.primary,
-                      text: 'Enviar correo',
+                    child: Center(
+                      child: BotonWidget(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
+                        textColor: Theme.of(context).colorScheme.primary,
+                        text: 'Enviar correo',
+                      ),
                     ),
                   ),
                 ),

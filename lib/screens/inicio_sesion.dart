@@ -26,9 +26,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
+    // final size = MediaQuery.of(context).size;
+    // final height = size.height;
+    // final width = size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -39,7 +39,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     height: 327,
                     width: 327,
                     child: ClipRRect(
@@ -72,7 +72,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                     controller: passwordController,
                     validator: (passwordOne) {
                       if (passwordOne!.isEmpty) {
-                        return 'Please type something';
+                        return 'Por favor ingresa tu contraseña';
                       }
                       return null;
                     },
@@ -81,7 +81,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                       print(passwordOne);
                     },
                     decoration: InputDecoration(
-                      icon: Icon(Icons.lock),
+                      icon: const Icon(Icons.lock),
                       hintText: 'Contraseña',
                       labelText: 'Contraseña',
                       suffixIcon: IconButton(
@@ -89,8 +89,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                           selectedValue
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          semanticLabel:
-                              selectedValue ? 'hide password' : 'show password',
+                          semanticLabel: selectedValue
+                              ? 'Contraseña oculta'
+                              : 'Contraseña visible',
                         ),
                         onPressed: () {
                           setState(() {
@@ -129,15 +130,17 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 30, top: 25),
+                  padding: const EdgeInsets.only(top: 25),
                   child: Center(
                     child: Hero(
                       tag: 'boton',
-                      child: BotonWidget(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                        textColor: Theme.of(context).colorScheme.primary,
-                        text: 'Iniciar sesión',
+                      child: Center(
+                        child: BotonWidget(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          textColor: Theme.of(context).colorScheme.primary,
+                          text: 'Iniciar sesión',
+                        ),
                       ),
                     ),
                   ),

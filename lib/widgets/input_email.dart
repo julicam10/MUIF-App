@@ -46,6 +46,7 @@ class EmailWidget extends StatelessWidget {
             return null;
           }
         },
+        // onChanged: (value) => print(value), Verificación de entrada de texto
       ),
     );
   }
