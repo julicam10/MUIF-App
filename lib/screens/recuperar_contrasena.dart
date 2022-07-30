@@ -15,6 +15,9 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
   final emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
@@ -27,23 +30,34 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                  padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                  child: TitleText(
-                    text: 'MUIF APP',
-                    size: 35.0,
-                    color: Colors.white,
-                  )),
               Padding(
-                  padding:
-                      const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                  child: TitleText(
-                      text: 'Recupera tu contraseña',
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 30)),
+                padding: EdgeInsets.only(
+                    top: height < 800 ? height * 0.02 : height * 0.04,
+                    left: 20.0,
+                    right: 20.0),
+                child: const TitleText(
+                  text: 'MUIF APP',
+                  size: 35.0,
+                  color: Colors.white,
+                ),
+              ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.04 : height * 0.04,
+                  left: 20.0,
+                  right: 20.0,
+                ),
+                child: TitleText(
+                  text: 'Recupera tu contraseña',
+                  color: Theme.of(context).colorScheme.secondary,
+                  size: 30,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: height < 800 ? height * 0.04 : height * 0.04,
+                    left: 20.0,
+                    right: 20.0),
                 child: NormalText(
                   text:
                       'Ingresa el correo electrónico con el que te registraste, para poder recuperar tu contraseña.',
@@ -52,8 +66,11 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.06 : height * 0.06,
+                  left: 20.0,
+                  right: 20.0,
+                ),
                 child: EmailWidget(
                   emailController: emailController,
                   colorHint: Colors.white,
@@ -64,7 +81,9 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 195),
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.2 : height * 0.22,
+                ),
                 child: Center(
                   child: Hero(
                     tag: 'boton',

@@ -24,6 +24,9 @@ class RegistroPageState extends State<RegistroPage> {
   final passwordTwoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -38,20 +41,29 @@ class RegistroPageState extends State<RegistroPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleText(
-                  text: 'MUIF APP',
-                  size: 30,
-                  color: Theme.of(context).colorScheme.primary),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: NormalText(
+              Padding(
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.002 : height * 0.006,
+                ),
+                child: TitleText(
+                    text: 'MUIF APP',
+                    size: 30,
+                    color: Theme.of(context).colorScheme.primary),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.02 : height * 0.04,
+                ),
+                child: const NormalText(
                   text: 'Movilidad Urbana Inteligente en Fusagasugá.',
                   color: Colors.black,
                   size: 22,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 50.0),
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.04 : height * 0.05,
+                ),
                 child: TitleText(
                   text: 'Crea tu cuenta',
                   size: 35,
@@ -59,7 +71,9 @@ class RegistroPageState extends State<RegistroPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.02 : height * 0.035,
+                ),
                 child: EmailWidget(
                   emailController: emailController,
                   colorHint: Theme.of(context).colorScheme.onSecondary,
@@ -70,7 +84,11 @@ class RegistroPageState extends State<RegistroPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 30, top: 10),
+                padding: EdgeInsets.only(
+                  left: 15,
+                  right: 30,
+                  top: height < 800 ? height * 0.015 : height * 0.02,
+                ),
                 child: TextFormField(
                   obscureText: selectedValue,
                   controller: passwordOneController,
@@ -105,7 +123,11 @@ class RegistroPageState extends State<RegistroPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 30, top: 10),
+                padding: EdgeInsets.only(
+                  left: 15,
+                  right: 30,
+                  top: height < 800 ? height * 0.015 : height * 0.02,
+                ),
                 child: TextFormField(
                   obscureText: selectedValueTwo,
                   controller: passwordTwoController,
@@ -153,7 +175,9 @@ class RegistroPageState extends State<RegistroPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 80),
+                padding: EdgeInsets.only(
+                  top: height < 800 ? height * 0.12 : height * 0.09,
+                ),
                 child: Hero(
                   tag: 'boton',
                   child: Center(

@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_print
+
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -26,9 +30,11 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    // final height = size.height;
-    // final width = size.width;
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+    print(height);
+    print(width);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -38,35 +44,54 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: SizedBox(
-                    height: 327,
-                    width: 327,
-                    child: ClipRRect(
-                      // ignore: sort_child_properties_last
-                      child: Image.asset('assets/img/iniciosesion.png'),
-                      borderRadius: BorderRadius.circular(215),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: height < 800 ? height * 0.002 : height * 0.006,
+                  ),
+                  child: Center(
+                    child: SizedBox(
+                      height: 327,
+                      width: 327,
+                      child: ClipRRect(
+                        // ignore: sort_child_properties_last
+                        child: Image.asset('assets/img/iniciosesion.png'),
+                        borderRadius: BorderRadius.circular(215),
+                      ),
                     ),
                   ),
                 ),
-                Text(
-                  'Iniciar Sesión',
-                  style: GoogleFonts.nunito(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: height < 800 ? height * 0.002 : height * 0.006,
+                  ),
+                  child: Text(
+                    'Iniciar Sesión',
+                    style: GoogleFonts.nunito(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
                 ),
-                EmailWidget(
-                  emailController: emailController,
-                  colorHint: Theme.of(context).colorScheme.onSecondary,
-                  colorLabel: Colors.grey.shade600,
-                  colorIcon: Theme.of(context).colorScheme.onSecondary,
-                  colorCursor: Colors.grey.shade600,
-                  textStyle: Theme.of(context).colorScheme.onSecondary,
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: height < 800 ? height * 0.003 : height * 0.005,
+                  ),
+                  child: EmailWidget(
+                    emailController: emailController,
+                    colorHint: Theme.of(context).colorScheme.onSecondary,
+                    colorLabel: Colors.grey.shade600,
+                    colorIcon: Theme.of(context).colorScheme.onSecondary,
+                    colorCursor: Colors.grey.shade600,
+                    textStyle: Theme.of(context).colorScheme.onSecondary,
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 30, top: 25),
+                  padding: EdgeInsets.only(
+                    left: 15,
+                    right: 30,
+                    top: height < 800 ? height * 0.02 : height * 0.03,
+                  ),
                   child: TextFormField(
                     obscureText: selectedValue,
                     controller: passwordController,
@@ -103,7 +128,10 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 170.0),
+                  padding: EdgeInsets.only(
+                    top: height < 800 ? height * 0.03 : height * 0.03,
+                    left: width * 0.5,
+                  ),
                   child: Text.rich(
                     TextSpan(
                       text: '',
@@ -130,7 +158,8 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 25),
+                  padding: EdgeInsets.only(
+                      top: height < 800 ? height * 0.03 : height * 0.05),
                   child: Center(
                     child: Hero(
                       tag: 'boton',
@@ -146,7 +175,8 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
+                  padding: EdgeInsets.only(
+                      top: height < 800 ? height * 0.03 : height * 0.06),
                   child: Center(
                     child: Text.rich(
                       TextSpan(
