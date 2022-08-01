@@ -7,11 +7,13 @@ class BotonWidget extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.text,
+    required this.navigator,
   }) : super(key: key);
 
   final Color backgroundColor;
   final Color textColor;
   final String text;
+  final String navigator;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class BotonWidget extends StatelessWidget {
           ),
         ),
         child: Text(text),
-        onPressed: () {},
+        onPressed: () => Navigator.pushNamed(context, navigator),
       ),
     );
   }

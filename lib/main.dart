@@ -11,12 +11,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       debugShowCheckedModeBanner: false,
-      initialRoute: InicioSesionPage.routeName,
+      initialRoute: '/',
       routes: {
-        InicioSesionPage.routeName: (_) => const InicioSesionPage(),
-        RecuperarContrasenaPage.routeName: (_) =>
-            const RecuperarContrasenaPage(),
-        RegistroPage.routeName: (_) => const RegistroPage(),
+        '/': (context) => const InicioSesionPage(),
+        '/recuperarContrasena': (context) => const RecuperarContrasenaPage(),
+        '/registro': (context) => const RegistroPage(),
+        '/home': (context) => const HomePage(),
       },
       theme: ThemeData(
         colorScheme: const ColorScheme.highContrastLight(

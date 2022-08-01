@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
+import 'package:muif_app/screens/screens.dart';
 
 class RegistroPage extends StatefulWidget {
   const RegistroPage({Key? key}) : super(key: key);
@@ -185,6 +186,7 @@ class RegistroPageState extends State<RegistroPage> {
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       text: 'Continuar',
                       textColor: Theme.of(context).colorScheme.primary,
+                      navigator: '/home',
                     ),
                   ),
                 ),

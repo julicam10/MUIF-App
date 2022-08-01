@@ -143,9 +143,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.pushNamed(
-                                  context,
-                                  RecuperarContrasenaPage.routeName,
-                                ),
+                                context, '/recuperarContrasena'),
                           text: 'Recuperar contraseña',
                           style: GoogleFonts.sourceSerifPro(
                             color: const Color(0xFF3D73DD),
@@ -169,6 +167,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                               Theme.of(context).colorScheme.secondary,
                           textColor: Theme.of(context).colorScheme.primary,
                           text: 'Iniciar sesión',
+                          navigator: '/home',
                         ),
                       ),
                     ),
@@ -190,7 +189,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () => Navigator.pushNamed(
                                     context,
-                                    RegistroPage.routeName,
+                                    '/registro',
                                   ),
                             text: ' registrate',
                             style: GoogleFonts.sourceSerifPro(

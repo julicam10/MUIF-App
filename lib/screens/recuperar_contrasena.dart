@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muif_app/widgets/widgets.dart';
+import 'package:muif_app/screens/screens.dart';
 
 class RecuperarContrasenaPage extends StatefulWidget {
   const RecuperarContrasenaPage({Key? key}) : super(key: key);
@@ -93,6 +94,7 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                             Theme.of(context).colorScheme.secondary,
                         textColor: Theme.of(context).colorScheme.primary,
                         text: 'Enviar correo',
+                        navigator: '/home',
                       ),
                     ),
                   ),
