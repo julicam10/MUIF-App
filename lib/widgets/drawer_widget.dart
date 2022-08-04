@@ -67,15 +67,22 @@ class _DrawerHeader extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Movilidad Urbana Inteligente Fusagasugá',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.nunito(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-            // Icono de la aplicación
+            Stack(
+              children: [
+                Text(
+                  'Movilidad Urbana Inteligente Fusagasugá',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.nunito(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  ),
+                ),
+                // Image(
+                //   image: AssetImage('assets/img/iconFlutter.png'),
+                //   fit: BoxFit.contain,
+                // )
+              ],
+            )
           ],
         ),
       ),
