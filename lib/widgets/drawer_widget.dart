@@ -21,7 +21,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const TitleText(
                 color: Colors.black, text: 'Mis tarjetas', size: 20.0),
-            onTap: (() {}),
+            onTap: () => Navigator.pushNamed(context, '/registrarTarjeta'),
           ),
           ListTile(
             leading: const Icon(

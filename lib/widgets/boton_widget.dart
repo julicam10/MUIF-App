@@ -24,7 +24,7 @@ class BotonWidget extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           onPrimary: textColor,
           primary: backgroundColor,
-          textStyle: GoogleFonts.sourceSerifPro(
+          textStyle: GoogleFonts.nunito(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),

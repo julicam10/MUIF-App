@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:muif_app/screens/screens.dart';
+import 'package:muif_app/screens/screens_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
         '/recuperarContrasena': (context) => const RecuperarContrasenaPage(),
         '/registro': (context) => const RegistroPage(),
         '/home': (context) => const HomePage(),
+        '/registrarTarjeta': (context) => const RegistrarTarjetaPage(),
+        '/infoTarjeta': (context) => const InfoTarjetaPage(),
       },
       theme: ThemeData(
         colorScheme: const ColorScheme.highContrastLight(
