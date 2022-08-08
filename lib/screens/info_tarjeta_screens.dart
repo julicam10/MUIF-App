@@ -29,7 +29,6 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     nombreController.dispose();
     cardController.dispose();
     fechaController.dispose();
@@ -39,7 +38,6 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -91,8 +89,8 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                     child: BotonWidget(
                       backgroundColor: Theme.of(context).colorScheme.secondary,
                       textColor: Theme.of(context).colorScheme.primary,
-                      text: 'Continuar',
-                      navigator: '',
+                      text: 'Guardar',
+                      navigator: '/home',
                     ),
                   )
                 ],
@@ -120,15 +118,39 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(left: 0.0),
+                    child: SizedBox(
+                      height: 80.0,
+                      width: 80.0,
+                      child: Image(
+                        image: AssetImage('assets/img/creditCard.png'),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 150.0, bottom: 45.0),
+                    child: SizedBox(
+                      height: 50.0,
+                      width: 50.0,
+                      child: Image(
+                        image: AssetImage('assets/img/iconoTarjeta.png'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               TitleText(
                 text: card == '' ? 'Número de tarjeta' : card,
                 color: Theme.of(context).colorScheme.secondary,
-                size: 20.0,
+                size: 17.0,
               ),
               TitleText(
                 text: nombre == '' ? 'Nombre del titular' : nombre,
                 color: Theme.of(context).colorScheme.secondary,
-                size: 20.0,
+                size: 17.0,
               ),
               Row(
                 children: [
@@ -137,13 +159,13 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                     child: TitleText(
                       text: fecha == '' ? 'Fecha' : fecha,
                       color: Theme.of(context).colorScheme.secondary,
-                      size: 20.0,
+                      size: 17.0,
                     ),
                   ),
                   TitleText(
                     text: codigo == '' ? 'Código' : codigo,
                     color: Theme.of(context).colorScheme.secondary,
-                    size: 20.0,
+                    size: 17.0,
                   ),
                 ],
               ),

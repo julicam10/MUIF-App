@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
@@ -21,7 +20,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const TitleText(
                 color: Colors.black, text: 'Mis tarjetas', size: 20.0),
-            onTap: () => Navigator.pushNamed(context, '/registrarTarjeta'),
+            onTap: () => Navigator.pushNamed(context, '/tusTarjetas'),
           ),
           ListTile(
             leading: const Icon(
@@ -31,7 +30,7 @@ class SideMenu extends StatelessWidget {
             ),
             title: const TitleText(
                 color: Colors.black, text: 'Escanear código QR', size: 20.0),
-            onTap: (() {}),
+            onTap: () => Navigator.pushNamed(context, '/barCode'),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 400.0, left: 30.0, right: 30.0),
