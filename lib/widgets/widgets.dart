@@ -5,4 +5,3 @@ export 'package:muif_app/widgets/boton_widget.dart';
 export 'package:muif_app/widgets/input_email_widget.dart';
 export 'package:muif_app/widgets/drawer_widget.dart';
 export 'package:muif_app/widgets/sheet_widget.dart';
-export 'package:muif_app/widgets/boton_scan_widget.dart';

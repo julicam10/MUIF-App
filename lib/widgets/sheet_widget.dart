@@ -60,17 +60,17 @@ class SheetWidget extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
                 child: _InfoContainer(
-                  ruta: 'Pampa - Terminal',
-                  horarioSemana: '5:20 am - 7:40 pm',
-                  horarioFinSemana: '5:25 am - 7:48 pm',
+                  ruta: 'Terminal - Pampa',
+                  horarioSemana: '6:03 am - 7:43 pm',
+                  horarioFinSemana: '6:03 am - 7:45 pm',
                 ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
                 child: _InfoContainer(
-                  ruta: 'Pampa - Terminal',
-                  horarioSemana: '5:20 am - 7:40 pm',
-                  horarioFinSemana: '5:25 am - 7:48 pm',
+                  ruta: 'Terminal - Pekin',
+                  horarioSemana: '5:38 am - 7:48 pm',
+                  horarioFinSemana: '6:03 am - 7:48 pm',
                 ),
               ),
             ],

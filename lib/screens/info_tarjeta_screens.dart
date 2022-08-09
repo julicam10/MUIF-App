@@ -112,65 +112,80 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
           color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15.0, bottom: 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(left: 0.0),
-                    child: SizedBox(
-                      height: 80.0,
-                      width: 80.0,
-                      child: Image(
-                        image: AssetImage('assets/img/creditCard.png'),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 150.0, bottom: 45.0),
-                    child: SizedBox(
-                      height: 50.0,
-                      width: 50.0,
-                      child: Image(
-                        image: AssetImage('assets/img/iconoTarjeta.png'),
-                      ),
-                    ),
-                  ),
-                ],
+        child: Stack(
+          children: [
+            const SizedBox(
+              height: 700,
+              width: 700,
+              child: Image(
+                image: AssetImage('assets/img/fondoTarjeta.png'),
+                fit: BoxFit.cover,
+                height: 500,
+                color: Color.fromRGBO(255, 255, 255, 0.12),
+                colorBlendMode: BlendMode.modulate,
               ),
-              TitleText(
-                text: card == '' ? 'Número de tarjeta' : card,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 17.0,
-              ),
-              TitleText(
-                text: nombre == '' ? 'Nombre del titular' : nombre,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 17.0,
-              ),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, bottom: 10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: TitleText(
-                      text: fecha == '' ? 'Fecha' : fecha,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 17.0,
-                    ),
+                  Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(left: 0.0),
+                        child: SizedBox(
+                          height: 80.0,
+                          width: 80.0,
+                          child: Image(
+                            image: AssetImage('assets/img/creditCard.png'),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 150.0, bottom: 45.0),
+                        child: SizedBox(
+                          height: 50.0,
+                          width: 50.0,
+                          child: Image(
+                            image: AssetImage('assets/img/iconoTarjeta.png'),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   TitleText(
-                    text: codigo == '' ? 'Código' : codigo,
+                    text: card == '' ? 'Número de tarjeta' : card,
                     color: Theme.of(context).colorScheme.secondary,
                     size: 17.0,
                   ),
+                  TitleText(
+                    text: nombre == '' ? 'Nombre del titular' : nombre,
+                    color: Theme.of(context).colorScheme.secondary,
+                    size: 17.0,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: TitleText(
+                          text: fecha == '' ? 'Fecha' : fecha,
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 17.0,
+                        ),
+                      ),
+                      TitleText(
+                        text: codigo == '' ? 'Código' : codigo,
+                        color: Theme.of(context).colorScheme.secondary,
+                        size: 17.0,
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

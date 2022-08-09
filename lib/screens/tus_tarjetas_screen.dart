@@ -65,7 +65,7 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () => Navigator.pushNamed(
                                 context,
-                                '/infoTarjeta',
+                                '/registrarTarjeta',
                               ),
                         text: ' Registar nueva tarjeta',
                         style: GoogleFonts.sourceSerifPro(
