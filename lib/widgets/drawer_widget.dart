@@ -1,11 +1,14 @@
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
+import '../models/bar_code_text.dart';
+
 class SideMenu extends StatelessWidget {
   const SideMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String barcodeScanRes = '0';
     return Drawer(
       elevation: 10.0,
       child: ListView(
@@ -20,7 +23,11 @@ class SideMenu extends StatelessWidget {
             ),
             title: const TitleText(
                 color: Colors.black, text: 'Mis tarjetas', size: 20.0),
-            onTap: () => Navigator.pushNamed(context, '/tusTarjetas'),
+            onTap: () => Navigator.pushNamed(
+              context,
+              '/tusTarjetas',
+              arguments: BarCodeText(barcodeScanRes),
+            ),
           ),
           ListTile(
             leading: const Icon(
@@ -37,10 +44,11 @@ class SideMenu extends StatelessWidget {
             child: SizedBox(
               width: 100,
               child: BotonWidget(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  textColor: Theme.of(context).colorScheme.primary,
-                  text: 'Cerrar sesión',
-                  navigator: '/'),
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                textColor: Theme.of(context).colorScheme.primary,
+                text: 'Cerrar sesión',
+                navigator: '/',
+              ),
             ),
           )
         ],

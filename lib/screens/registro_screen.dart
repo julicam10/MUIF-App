@@ -24,7 +24,7 @@ class RegistroPageState extends State<RegistroPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final height = size.height;
-    final width = size.width;
+    // final width = size.width;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
