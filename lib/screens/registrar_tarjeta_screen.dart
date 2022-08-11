@@ -51,9 +51,10 @@ class _RegistrarTarjetaPageState extends State<RegistrarTarjetaPage> {
                   Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: TitleText(
-                        text: 'Tarjeta de debito',
-                        color: Colors.black,
-                        size: 17.0),
+                      text: 'Tarjeta de debito',
+                      color: Colors.black,
+                      size: 17.0,
+                    ),
                   )
                 ],
               ),

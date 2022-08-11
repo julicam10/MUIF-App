@@ -39,7 +39,7 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
             ),
             // Cards
             Padding(
-              padding: const EdgeInsets.only(top: 600),
+              padding: const EdgeInsets.only(top: 500),
               child: Center(
                 child: Text.rich(
                   TextSpan(
@@ -74,30 +74,34 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
             //   navigator:
             //       args.barCodeText == '' ? '' : '/seleccionarInformacion',
             // ),
-            SizedBox(
-              height: 50,
-              width: 270,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  onPrimary: args.barCodeText.length == 1
-                      ? Colors.grey
-                      : Theme.of(context).colorScheme.primary,
-                  primary: args.barCodeText.length == 1
-                      ? Colors.white
-                      : Theme.of(context).colorScheme.secondary,
-                  textStyle: GoogleFonts.nunito(
-                    fontSize: args.barCodeText.length == 1 ? 18 : 20,
-                    fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.only(top: 70.0),
+              child: SizedBox(
+                height: 50,
+                width: 270,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    onPrimary: args.barCodeText.length == 1
+                        ? Colors.grey
+                        : Theme.of(context).colorScheme.primary,
+                    primary: args.barCodeText.length == 1
+                        ? Colors.white
+                        : Theme.of(context).colorScheme.secondary,
+                    textStyle: GoogleFonts.nunito(
+                      fontSize: args.barCodeText.length == 1 ? 18 : 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  child: args.barCodeText.length == 1
+                      ? const Text('Primero escanea un QR')
+                      : const Text('Continuar'),
+                  onPressed: () {
+                    args.barCodeText.length == 1
+                        ? null
+                        : Navigator.pushNamed(
+                            context, '/seleccionarInformacion');
+                  },
                 ),
-                child: args.barCodeText.length == 1
-                    ? const Text('Primero escanea un QR')
-                    : const Text('Continuar'),
-                onPressed: () {
-                  args.barCodeText.length == 1
-                      ? null
-                      : Navigator.pushNamed(context, '/seleccionarInformacion');
-                },
               ),
             ),
           ],

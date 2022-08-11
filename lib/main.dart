@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
         '/tusTarjetas': (context) => const TusTarjetasPage(),
         '/barCode': (context) => const BarCodePage(),
         '/seleccionarInformacion': (context) =>
-            const SeleccionarInformacionPage()
+            const SeleccionarInformacionPage(),
+        '/pagarPasaje': (context) => const PagarPasajePage(),
       },
       theme: ThemeData(
         colorScheme: const ColorScheme.highContrastLight(

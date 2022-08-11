@@ -7,3 +7,4 @@ export 'package:muif_app/screens/info_tarjeta_screens.dart';
 export 'package:muif_app/screens/tus_tarjetas_screen.dart';
 export 'package:muif_app/screens/barcode_screen.dart';
 export 'package:muif_app/screens/seleccionar_info_screen.dart';
+export 'package:muif_app/screens/pagar_pasaje_screen.dart';
