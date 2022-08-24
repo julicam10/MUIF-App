@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 
 void main() => runApp(const MyApp());
@@ -10,6 +11,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
+      // builder: (context, child) => ResponsiveWrapper.builder(
+      //   child,
+      //   maxWidth: 1200,
+      //   minWidth: 480,
+      //   defaultScale: true,
+      //   breakpoints: [
+      //     const ResponsiveBreakpoint.resize(480, name: MOBILE),
+      //     const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+      //     const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+      //   ],
+      // ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
@@ -24,6 +36,11 @@ class MyApp extends StatelessWidget {
         '/seleccionarInformacion': (context) =>
             const SeleccionarInformacionPage(),
         '/pagarPasaje': (context) => const PagarPasajePage(),
+        '/monederoVirtual': (context) => const MonederoVirtualPage(),
+        '/autorizacion': (context) => const AutorizacionPage(),
+        '/comprobantePago': (context) => const ComprobantePagoPage(),
+        '/montoRecargar': (context) => const MontoRecargarPage(),
+        '/productoDestino': (context) => const ProductoDestinoPage(),
       },
       theme: ThemeData(
         colorScheme: const ColorScheme.highContrastLight(

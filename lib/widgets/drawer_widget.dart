@@ -15,32 +15,32 @@ class SideMenu extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           const _DrawerHeader(),
+          const _ListTileMenu(
+            icon: Icons.credit_card,
+            text: 'Mis tarjetas',
+            navegacion: '/tusTarjetas',
+          ),
+          const _ListTileMenu(
+            icon: Icons.qr_code_2_rounded,
+            text: 'Escanear código QR',
+            navegacion: '/barCode',
+          ),
           ListTile(
             leading: const Icon(
-              Icons.credit_card,
+              Icons.wallet,
               color: Colors.black,
               size: 40.0,
             ),
             title: const TitleText(
-                color: Colors.black, text: 'Mis tarjetas', size: 20.0),
+                color: Colors.black, text: 'Monedero virtual', size: 20.0),
             onTap: () => Navigator.pushNamed(
               context,
-              '/tusTarjetas',
+              '/monederoVirtual',
               arguments: BarCodeText(barcodeScanRes),
             ),
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.qr_code_2_rounded,
-              color: Colors.black,
-              size: 40.0,
-            ),
-            title: const TitleText(
-                color: Colors.black, text: 'Escanear código QR', size: 20.0),
-            onTap: () => Navigator.pushNamed(context, '/barCode'),
-          ),
           Padding(
-            padding: const EdgeInsets.only(top: 400.0, left: 30.0, right: 30.0),
+            padding: const EdgeInsets.only(top: 350.0, left: 30.0, right: 30.0),
             child: SizedBox(
               width: 100,
               child: BotonWidget(
@@ -52,6 +52,35 @@ class SideMenu extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _ListTileMenu extends StatelessWidget {
+  const _ListTileMenu({
+    Key? key,
+    required this.icon,
+    required this.text,
+    required this.navegacion,
+  }) : super(key: key);
+
+  final IconData icon;
+  final String text;
+  final String navegacion;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: Colors.black,
+        size: 40.0,
+      ),
+      title: TitleText(color: Colors.black, text: text, size: 20.0),
+      onTap: () => Navigator.pushNamed(
+        context,
+        navegacion,
       ),
     );
   }

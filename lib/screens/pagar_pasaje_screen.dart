@@ -9,6 +9,7 @@ class PagarPasajePage extends StatefulWidget {
 }
 
 class _PagarPasajePageState extends State<PagarPasajePage> {
+  bool _estaActivo = false;
   @override
   Widget build(BuildContext context) {
     String valor = '${'xxxx'} COP';
@@ -16,7 +17,7 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
     String cantidadCuotas = 'X';
     String numerosFinales = 'XXX';
     String banco = 'XXX';
-    bool _value = false;
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -115,30 +116,41 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primary,
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(50.0),
-                  topRight: Radius.circular(50.0),
+                  topLeft: Radius.circular(25.0),
+                  topRight: Radius.circular(25.0),
                 ),
               ),
               child: Column(
                 children: [
-                  CheckboxListTile(
-                    activeColor: Colors.red,
-                    selected: _value,
-                    value: _value,
-                    onChanged: (bool? valueSeleceted) {
-                      setState(() {
-                        _value == valueSeleceted;
-                      });
-                    },
-                    title: const NormalText(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: CheckboxListTile(
+                      checkColor: Theme.of(context).colorScheme.primary,
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                      title: const NormalText(
                         text: 'Estoy de acuerdo en realizar la transferencia',
                         color: Colors.white,
-                        size: 15.0),
-                  )
+                        size: 20.0,
+                      ),
+                      value: _estaActivo,
+                      onChanged: (value) => setState(() {
+                        _estaActivo = value ?? true;
+                      }),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 230.0),
+                    child: BotonWidget(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      textColor: Theme.of(context).colorScheme.primary,
+                      text: 'Pagar',
+                      navigator: '/comprobantePago',
+                    ),
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

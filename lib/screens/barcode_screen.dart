@@ -21,7 +21,7 @@ class _BarCodePageState extends State<BarCodePage> {
       // ignore: use_build_context_synchronously
       Navigator.pushNamed(
         context,
-        '/tusTarjetas',
+        '/monederoVirtual',
         arguments: BarCodeText(barcodeScanRes),
       );
     } on PlatformException {
@@ -54,7 +54,7 @@ class _BarCodePageState extends State<BarCodePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: () => Navigator.pushNamed(context, '/tusTarjetas'),
+              onPressed: () => Navigator.pushNamed(context, '/monederoVirtual'),
               icon: const Icon(
                 Icons.arrow_circle_right_outlined,
                 color: Colors.black,
