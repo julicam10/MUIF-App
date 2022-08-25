@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _initialCameraPosition = const CameraPosition(
+    target: LatLng(4.342518, -74.361593),
+    zoom: 16,
+  );
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,6 +32,14 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Expanded(
+              child: Container(
+                color: Colors.grey,
+                child: GoogleMap(
+                  initialCameraPosition: _initialCameraPosition,
+                ),
+              ),
+            ),
             Container(
               alignment: Alignment.bottomCenter,
               height: 50.0,
