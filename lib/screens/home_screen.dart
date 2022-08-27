@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   );
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -37,12 +38,16 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.grey,
                 child: GoogleMap(
                   initialCameraPosition: _initialCameraPosition,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  zoomControlsEnabled: false,
                 ),
               ),
             ),
             Container(
               alignment: Alignment.bottomCenter,
-              height: 50.0,
+              height:
+                  size.height < 800 ? size.height * 0.025 : size.height * 0.07,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.background,

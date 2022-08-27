@@ -24,51 +24,50 @@ class AutorizacionPageState extends State<AutorizacionPage> {
               BackArrowButton(color: Theme.of(context).colorScheme.secondary),
         ),
         body: Center(
-          child: ListView(
+          child: Column(
             children: [
-              Column(
-                children: [
-                  const TitleText(
-                    text: 'Autorización',
-                    color: Colors.black,
-                    size: 20,
+              const TitleText(
+                text: 'Autorización',
+                color: Colors.black,
+                size: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 335),
+                child: Container(
+                  height: 400,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25.0),
+                      topRight: Radius.circular(25.0),
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 289),
-                    child: Container(
-                      height: 400,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25.0),
-                          topRight: Radius.circular(25.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 20.0, horizontal: 20.0),
+                        child: NormalText(
+                            text: text, color: Colors.white, size: 18.0),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 150.0),
+                        child: Hero(
+                          tag: 'boton',
+                          child: BotonWidget(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.secondary,
+                            textColor: Theme.of(context).colorScheme.primary,
+                            text: 'Continuar',
+                            navigator: '/montoRecargar',
+                          ),
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20.0, horizontal: 20.0),
-                            child: NormalText(
-                                text: text, color: Colors.white, size: 18.0),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 150.0),
-                            child: BotonWidget(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              textColor: Theme.of(context).colorScheme.primary,
-                              text: 'Continuar',
-                              navigator: '/montoRecargar',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),

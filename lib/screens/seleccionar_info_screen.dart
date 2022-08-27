@@ -44,11 +44,14 @@ class SeleccionarInformacionPageState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-              child: TitleText(
-                text: 'Número de pasajes',
-                color: Colors.black,
-                size: 20.0,
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: TitleText(
+                  text: 'Número de pasajes',
+                  color: Colors.black,
+                  size: 20.0,
+                ),
               ),
             ),
             Padding(
@@ -75,46 +78,17 @@ class SeleccionarInformacionPageState
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-              child: TitleText(
-                text: 'Número de cuotas',
-                color: Colors.black,
-                size: 20.0,
-              ),
-            ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 110.0, vertical: 10.0),
-              child: SizedBox(
-                height: 60.0,
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  value: selectedValueCuotas,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedValueCuotas = newValue!;
-                    });
-                  },
-                  items: dropdownItems,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 300),
+              padding: const EdgeInsets.only(top: 500),
               child: Center(
-                child: BotonWidget(
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  textColor: Theme.of(context).colorScheme.primary,
-                  text: 'Continuar',
-                  navigator: '/pagarPasaje',
+                child: Hero(
+                  tag: 'boton',
+                  child: BotonWidget(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    textColor: Theme.of(context).colorScheme.primary,
+                    text: 'Continuar',
+                    navigator: '/pagarPasaje',
+                  ),
                 ),
               ),
             )

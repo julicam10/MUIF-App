@@ -8,6 +8,7 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     String barcodeScanRes = '0';
     return Drawer(
       elevation: 10.0,
@@ -40,7 +41,11 @@ class SideMenu extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 350.0, left: 30.0, right: 30.0),
+            padding: EdgeInsets.only(
+              top: size.height < 800 ? size.height * 0.39 : size.height * 0.45,
+              left: size.width < 390 ? size.width * 0.1 : size.width * 0.05,
+              right: size.width < 390 ? size.width * 0.1 : size.width * 0.05,
+            ),
             child: SizedBox(
               width: 100,
               child: BotonWidget(

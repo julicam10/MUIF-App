@@ -60,12 +60,15 @@ class _RegistrarTarjetaPageState extends State<RegistrarTarjetaPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 300.0),
-              child: BotonWidget(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                textColor: Theme.of(context).colorScheme.primary,
-                text: 'Continuar',
-                navigator: '/infoTarjeta',
+              padding: const EdgeInsets.only(top: 330.0),
+              child: Hero(
+                tag: 'boton',
+                child: BotonWidget(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  textColor: Theme.of(context).colorScheme.primary,
+                  text: 'Continuar',
+                  navigator: '/infoTarjeta',
+                ),
               ),
             )
           ],

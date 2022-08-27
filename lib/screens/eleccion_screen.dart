@@ -32,7 +32,7 @@ class _EleccionPageState extends State<EleccionPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
+                  padding: const EdgeInsets.only(top: 600.0),
                   child: Container(
                     height: 65,
                     width: 300,

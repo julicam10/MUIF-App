@@ -13,7 +13,6 @@ class TusTarjetasPage extends StatefulWidget {
 class _TusTarjetasPageState extends State<TusTarjetasPage> {
   @override
   Widget build(BuildContext context) {
-    // final args = ModalRoute.of(context)!.settings.arguments as BarCodeText;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -35,7 +34,7 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
             ),
             // Cards
             Padding(
-              padding: const EdgeInsets.only(top: 500),
+              padding: const EdgeInsets.only(top: 650),
               child: Center(
                 child: Text.rich(
                   TextSpan(

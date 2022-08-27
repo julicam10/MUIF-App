@@ -43,7 +43,7 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
               padding: const EdgeInsets.only(top: 50.0),
               child: Center(
                 child: Container(
-                  height: 440,
+                  height: 490,
                   width: 330,
                   decoration: BoxDecoration(
                     color: const Color(0xFFF9F9F9),
@@ -53,7 +53,8 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
                       ),
                     ],
                   ),
@@ -72,6 +73,7 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                         _ColumnaCorreo(),
                         _ColumnaCantidadPasajes(),
                         _ColumnaTotalPagar(),
+                        _ColumnaSaldo(),
                       ],
                     ),
                   ),
@@ -244,6 +246,25 @@ class _ColumnaTotalPagar extends StatelessWidget {
         children: [
           const TitleText(
               text: 'Total a pagar', color: Colors.black, size: 20.0),
+          NormalText(text: totalPagar, color: Colors.black, size: 15.0)
+        ],
+      ),
+    );
+  }
+}
+
+class _ColumnaSaldo extends StatelessWidget {
+  const _ColumnaSaldo({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15.0),
+      child: Column(
+        children: [
+          const TitleText(text: 'Tu saldo', color: Colors.black, size: 20.0),
           NormalText(text: totalPagar, color: Colors.black, size: 15.0)
         ],
       ),

@@ -24,10 +24,8 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final height = size.height;
-    final width = size.width;
-    print(height);
-    print(width);
+    print(size.height);
+    print(size.width);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -39,7 +37,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.002 : height * 0.006,
+                    top: size.height < 800
+                        ? size.height * 0.002
+                        : size.height * 0.006,
                   ),
                   child: Center(
                     child: SizedBox(
@@ -55,7 +55,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.002 : height * 0.006,
+                    top: size.height < 800
+                        ? size.height * 0.002
+                        : size.height * 0.006,
                   ),
                   child: Text(
                     'Iniciar Sesión',
@@ -68,7 +70,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.003 : height * 0.005,
+                    top: size.height < 800
+                        ? size.height * 0.003
+                        : size.height * 0.005,
                   ),
                   child: EmailWidget(
                     emailController: emailController,
@@ -83,7 +87,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   padding: EdgeInsets.only(
                     left: 15,
                     right: 30,
-                    top: height < 800 ? height * 0.02 : height * 0.03,
+                    top: size.height < 800
+                        ? size.height * 0.02
+                        : size.height * 0.03,
                   ),
                   child: TextFormField(
                     obscureText: selectedValue,
@@ -122,8 +128,10 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.03 : height * 0.03,
-                    left: width * 0.5,
+                    top: size.height < 800
+                        ? size.height * 0.03
+                        : size.height * 0.03,
+                    left: size.width * 0.5,
                   ),
                   child: Text.rich(
                     TextSpan(
@@ -150,7 +158,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      top: height < 800 ? height * 0.03 : height * 0.05),
+                      top: size.height < 800
+                          ? size.height * 0.03
+                          : size.height * 0.07),
                   child: Center(
                     child: Hero(
                       tag: 'boton',
@@ -168,7 +178,9 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      top: height < 800 ? height * 0.03 : height * 0.06),
+                      top: size.height < 800
+                          ? size.height * 0.03
+                          : size.height * 0.07),
                   child: Center(
                     child: Text.rich(
                       TextSpan(

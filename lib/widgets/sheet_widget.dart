@@ -7,6 +7,7 @@ class SheetWidget extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SizedBox(
       height: 500,
       child: ListView(
@@ -15,17 +16,29 @@ class SheetWidget extends StatelessWidget {
             children: [
               const _BarWidget(),
               Padding(
-                padding: const EdgeInsets.only(top: 30.0),
+                padding: EdgeInsets.only(
+                  top: size.height < 800
+                      ? size.height * 0.06
+                      : size.height * 0.03,
+                ),
                 child: Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: size.height < 800
+                            ? size.height * 0.005
+                            : size.height * 0.01,
+                      ),
                       child: _IconsWidgets(),
                     ),
                     Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 10.0),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: size.height < 800
+                                ? size.height * 0.005
+                                : size.height * 0.01,
+                          ),
                           child: _FirstRow(),
                         ),
                         Container(
@@ -44,30 +57,52 @@ class SheetWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: TitleText(
+              Padding(
+                padding: EdgeInsets.only(
+                  top: size.height < 800
+                      ? size.height * 0.005
+                      : size.height * 0.01,
+                ),
+                child: const TitleText(
                     text: 'Horarios', color: Colors.black, size: 23.0),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-                child: _InfoContainer(
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal:
+                      size.width < 390 ? size.width / 30 : size.width / 30,
+                  vertical: size.height < 800
+                      ? size.height * 0.005
+                      : size.height * 0.01,
+                ),
+                child: const _InfoContainer(
                   ruta: 'Pampa - Terminal',
                   horarioSemana: '5:20 am - 7:40 pm',
                   horarioFinSemana: '5:25 am - 7:48 pm',
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-                child: _InfoContainer(
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal:
+                      size.width < 390 ? size.width / 30 : size.width / 30,
+                  vertical: size.height < 800
+                      ? size.height * 0.005
+                      : size.height * 0.01,
+                ),
+                child: const _InfoContainer(
                   ruta: 'Terminal - Pampa',
                   horarioSemana: '6:03 am - 7:43 pm',
                   horarioFinSemana: '6:03 am - 7:45 pm',
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
-                child: _InfoContainer(
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal:
+                      size.width < 390 ? size.width / 30 : size.width / 30,
+                  vertical: size.height < 800
+                      ? size.height * 0.005
+                      : size.height * 0.01,
+                ),
+                child: const _InfoContainer(
                   ruta: 'Terminal - Pekin',
                   horarioSemana: '5:38 am - 7:48 pm',
                   horarioFinSemana: '6:03 am - 7:48 pm',
@@ -95,9 +130,10 @@ class _InfoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SizedBox(
-      height: 170,
-      width: 340,
+      height: size.height < 800 ? size.height * 0.1 : size.height * 0.2,
+      width: size.width < 390 ? size.width * 0.4 : size.width * 0.8,
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
@@ -119,7 +155,9 @@ class _InfoContainer extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: EdgeInsets.only(
+                left: size.width < 390 ? size.width * 0.02 : size.width * 0.04,
+              ),
               child: TitleText(
                 text: 'Lunes a sabado',
                 color: Theme.of(context).colorScheme.primary,
@@ -127,7 +165,9 @@ class _InfoContainer extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: EdgeInsets.only(
+                left: size.width < 390 ? size.width * 0.025 : size.width * 0.05,
+              ),
               child: NormalText(
                 text: horarioSemana,
                 color: Colors.grey.shade700,
@@ -135,7 +175,9 @@ class _InfoContainer extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: EdgeInsets.only(
+                left: size.width < 390 ? size.width * 0.02 : size.width * 0.04,
+              ),
               child: TitleText(
                 text: 'Domingos y festivos',
                 color: Theme.of(context).colorScheme.primary,
@@ -143,7 +185,9 @@ class _InfoContainer extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: EdgeInsets.only(
+                left: size.width < 390 ? size.width * 0.025 : size.width * 0.05,
+              ),
               child: NormalText(
                 text: horarioFinSemana,
                 color: Colors.grey.shade700,
@@ -171,8 +215,11 @@ class _BarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.only(
+        top: size.height < 800 ? size.height * 0.005 : size.height * 0.01,
+      ),
       child: GestureDetector(
         onTap: () => Navigator.pop(context),
         child: Center(
@@ -198,10 +245,13 @@ class _FirstRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 0.0),
+          padding: EdgeInsets.only(
+              left: size.width < 390 ? size.width * 0.025 : size.width * 0.05,
+              top: 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -210,10 +260,14 @@ class _FirstRow extends StatelessWidget {
                 color: Colors.grey.shade400,
                 size: 14,
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                child:
-                    NormalText(text: 'La Pampa', color: Colors.black, size: 19),
+              Padding(
+                padding: EdgeInsets.only(
+                  left:
+                      size.width < 390 ? size.width * 0.01 : size.width * 0.02,
+                  top: 5.0,
+                ),
+                child: const NormalText(
+                    text: 'La Pampa', color: Colors.black, size: 19),
               ),
             ],
           ),

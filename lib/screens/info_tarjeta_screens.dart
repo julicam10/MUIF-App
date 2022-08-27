@@ -85,12 +85,16 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 160.0),
-                    child: BotonWidget(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      textColor: Theme.of(context).colorScheme.primary,
-                      text: 'Guardar',
-                      navigator: '/home',
+                    padding: const EdgeInsets.only(top: 200.0),
+                    child: Hero(
+                      tag: 'boton',
+                      child: BotonWidget(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
+                        textColor: Theme.of(context).colorScheme.primary,
+                        text: 'Guardar',
+                        navigator: '/home',
+                      ),
                     ),
                   )
                 ],

@@ -36,15 +36,20 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: _inputMonto()),
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: _inputMonto(),
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 500.0),
-                    child: BotonWidget(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      textColor: Theme.of(context).colorScheme.primary,
-                      text: 'Continuar',
-                      navigator: '/productoDestino',
+                    padding: const EdgeInsets.only(top: 550.0),
+                    child: Hero(
+                      tag: 'boton',
+                      child: BotonWidget(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
+                        textColor: Theme.of(context).colorScheme.primary,
+                        text: 'Continuar',
+                        navigator: '/eleccion',
+                      ),
                     ),
                   ),
                 ],

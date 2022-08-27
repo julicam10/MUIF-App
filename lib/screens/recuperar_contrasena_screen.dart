@@ -16,8 +16,6 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final height = size.height;
-    // final width = size.width;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -27,68 +25,77 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
               BackArrowButton(color: Theme.of(context).colorScheme.background),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: height < 800 ? height * 0.02 : height * 0.04,
-                      left: 20.0,
-                      right: 20.0),
-                  child: const TitleText(
-                    text: 'MUIF APP',
-                    size: 35.0,
-                    color: Colors.white,
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: size.width < 390 ? size.width * 0.05 : size.width * 0.075,
+                right:
+                    size.width < 390 ? size.width * 0.05 : size.width * 0.075),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: size.height < 800
+                          ? size.height * 0.02
+                          : size.height * 0.04,
+                    ),
+                    child: const TitleText(
+                      text: 'MUIF APP',
+                      size: 35.0,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.04 : height * 0.04,
-                    left: 20.0,
-                    right: 20.0,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: size.height < 800
+                          ? size.height * 0.04
+                          : size.height * 0.04,
+                    ),
+                    child: TitleText(
+                      text: 'Recupera tu contraseña',
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: 30,
+                    ),
                   ),
-                  child: TitleText(
-                    text: 'Recupera tu contraseña',
-                    color: Theme.of(context).colorScheme.secondary,
-                    size: 30,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: size.height < 800
+                          ? size.height * 0.04
+                          : size.height * 0.04,
+                    ),
+                    child: NormalText(
+                      text:
+                          'Ingresa el correo electrónico con el que te registraste, para poder recuperar tu contraseña.',
+                      size: 18,
+                      color: Theme.of(context).colorScheme.background,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: height < 800 ? height * 0.04 : height * 0.04,
-                      left: 20.0,
-                      right: 20.0),
-                  child: NormalText(
-                    text:
-                        'Ingresa el correo electrónico con el que te registraste, para poder recuperar tu contraseña.',
-                    size: 18,
-                    color: Theme.of(context).colorScheme.background,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: size.height < 800
+                          ? size.height * 0.06
+                          : size.height * 0.06,
+                    ),
+                    child: EmailWidget(
+                      emailController: emailController,
+                      colorHint: Colors.white,
+                      colorLabel: Colors.white,
+                      colorIcon: Colors.white,
+                      colorCursor: Colors.white,
+                      textStyle: Colors.white,
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.06 : height * 0.06,
-                    left: 20.0,
-                    right: 20.0,
-                  ),
-                  child: EmailWidget(
-                    emailController: emailController,
-                    colorHint: Colors.white,
-                    colorLabel: Colors.white,
-                    colorIcon: Colors.white,
-                    colorCursor: Colors.white,
-                    textStyle: Colors.white,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: height < 800 ? height * 0.2 : height * 0.22,
-                  ),
-                  child: Center(
-                    child: Hero(
-                      tag: 'boton',
-                      child: Center(
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: size.height < 800
+                          ? size.height * 0.2
+                          : size.height * 0.27,
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Hero(
+                        tag: 'boton',
                         child: BotonWidget(
                           backgroundColor:
                               Theme.of(context).colorScheme.secondary,
@@ -99,8 +106,8 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
         '/autorizacion': (context) => const AutorizacionPage(),
         '/comprobantePago': (context) => const ComprobantePagoPage(),
         '/montoRecargar': (context) => const MontoRecargarPage(),
-        '/productoDestino': (context) => const ProductoDestinoPage(),
         '/eleccion': (context) => const EleccionPage(),
       },
       theme: ThemeData(
