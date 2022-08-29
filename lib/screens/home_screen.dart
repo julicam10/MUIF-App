@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,10 +12,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late GoogleMapController _mapController;
+  final Location _location = Location();
   final _initialCameraPosition = const CameraPosition(
     target: LatLng(4.342518, -74.361593),
     zoom: 16,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    _initLocation();
+  }
+
+  _initLocation() async {
+    var _serviceEnable = await _location.serviceEnabled();
+    if (!_serviceEnable) {
+      _serviceEnable = await _location.requestService();
+      if (!_serviceEnable) {
+        return;
+      }
+    }
+    var _permissionGranted = await _location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await _location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        print('No Permission');
+        return;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -41,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                   myLocationEnabled: true,
                   myLocationButtonEnabled: true,
                   zoomControlsEnabled: false,
+                  onMapCreated: (controller) => _mapController = controller,
                 ),
               ),
             ),

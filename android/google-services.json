@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "725144343431",
+    "project_id": "muif-app",
+    "storage_bucket": "muif-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725144343431:android:8ff9385237f78b171bf922",
+        "android_client_info": {
+          "package_name": "com.example.muif_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "725144343431-jub8oc06mehcp3tvtfhsujtriii2bn7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.muif_app",
+            "certificate_hash": "40b048a27914f3db30cb5f4bad03c90adb8e4193"
+          }
+        },
+        {
+          "client_id": "725144343431-k6pp54jtrrgnmv0gigk1hs9663f8c4ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFQySgDKVUN4fMLGmR5S7T2vCtlFK88tU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "725144343431-k6pp54jtrrgnmv0gigk1hs9663f8c4ru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
