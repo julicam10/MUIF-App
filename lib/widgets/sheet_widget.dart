@@ -29,7 +29,7 @@ class SheetWidget extends StatelessWidget {
                             ? size.height * 0.005
                             : size.height * 0.01,
                       ),
-                      child: _IconsWidgets(),
+                      child: const _IconsWidgets(),
                     ),
                     Column(
                       children: [
@@ -39,7 +39,7 @@ class SheetWidget extends StatelessWidget {
                                 ? size.height * 0.005
                                 : size.height * 0.01,
                           ),
-                          child: _FirstRow(),
+                          child: const _FirstRow(),
                         ),
                         Container(
                           height: 1.0,

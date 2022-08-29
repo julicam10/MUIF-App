@@ -29,7 +29,8 @@ class BotonWidget extends StatelessWidget {
           ),
         ),
         child: Text(text),
-        onPressed: () => Navigator.pushNamed(context, navigator),
+        // onPressed: () => Navigator.pushNamed(context, navigator),
+        onPressed: () => Navigator.pushReplacementNamed(context, navigator),
       ),
     );
   }

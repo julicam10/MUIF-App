@@ -1,7 +1,13 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:muif_app/widgets/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,9 +17,20 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+class Person {
+  final String id;
+  final LatLng position;
+  Person(this.id, this.position);
+}
+
 class _HomePageState extends State<HomePage> {
   late GoogleMapController _mapController;
   final Location _location = Location();
+  late StreamSubscription<LocationData> subscription;
+  late StreamSubscription<QuerySnapshot> documentSubscription;
+  List<Person> people = [];
+  final String routeNumber = '001';
+  final String userId = Uuid().v1();
   final _initialCameraPosition = const CameraPosition(
     target: LatLng(4.342518, -74.361593),
     zoom: 16,
@@ -22,7 +39,16 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    //REVISAR ESTO
+    // Timer.periodic(const Duration(seconds: 30), (timer) {
     _initLocation();
+    // });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _removeLocation();
   }
 
   _initLocation() async {
@@ -41,6 +67,54 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
+    // Sincronizar multiusuarios en el mapa
+    // Timer.periodic(const Duration(seconds: 20), (timer) { });
+    documentSubscription = FirebaseFirestore.instance
+        .collection('route')
+        .doc(routeNumber)
+        .collection('people')
+        .snapshots()
+        .listen((event) {
+      people = event.docs
+          .map(
+            (e) => Person(
+              e.id,
+              LatLng(e['lat'], e['lng']),
+            ),
+          )
+          .toList();
+      setState(() {});
+    });
+
+    // Timer.periodic(const Duration(seconds: 20), (timer) { });
+    subscription = _location.onLocationChanged.listen((LocationData event) {
+      FirebaseFirestore.instance
+          .collection('route')
+          .doc('001')
+          .collection('people')
+          .doc(userId)
+          .set({
+        'lat': event.latitude,
+        'lng': event.longitude,
+      });
+      print('${event.latitude}, ${event.longitude}');
+    });
+  }
+
+  _removeLocation() {
+    if (documentSubscription != null) {
+      documentSubscription.cancel();
+    }
+    if (subscription != null) {
+      subscription.cancel();
+    }
+    FirebaseFirestore.instance
+        .collection('route')
+        .doc('001')
+        .collection('people')
+        .doc(userId)
+        .delete();
+    setState(() {});
   }
 
   @override
@@ -56,6 +130,15 @@ class _HomePageState extends State<HomePage> {
           ),
           centerTitle: true,
           elevation: 0.0,
+          actions: [
+            IconButton(
+              onPressed: _removeLocation,
+              icon: const Icon(
+                Icons.highlight_remove_sharp,
+                color: Colors.red,
+              ),
+            )
+          ],
         ),
         drawer: const SideMenu(),
         body: Column(
@@ -69,6 +152,12 @@ class _HomePageState extends State<HomePage> {
                   myLocationEnabled: true,
                   myLocationButtonEnabled: true,
                   zoomControlsEnabled: false,
+                  markers: people
+                      .map((e) => Marker(
+                            markerId: MarkerId(e.id),
+                            position: e.position,
+                          ))
+                      .toSet(),
                   onMapCreated: (controller) => _mapController = controller,
                 ),
               ),
