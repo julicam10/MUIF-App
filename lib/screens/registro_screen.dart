@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 

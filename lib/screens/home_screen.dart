@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, no_leading_underscores_for_local_identifiers
 
 import 'dart:async';
 
@@ -39,10 +39,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    //REVISAR ESTO
-    // Timer.periodic(const Duration(seconds: 30), (timer) {
-    _initLocation();
-    // });
+    //_initLocation();
   }
 
   @override
@@ -67,37 +64,39 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-    // Sincronizar multiusuarios en el mapa
-    // Timer.periodic(const Duration(seconds: 20), (timer) { });
-    documentSubscription = FirebaseFirestore.instance
-        .collection('route')
-        .doc(routeNumber)
-        .collection('people')
-        .snapshots()
-        .listen((event) {
-      people = event.docs
-          .map(
-            (e) => Person(
-              e.id,
-              LatLng(e['lat'], e['lng']),
-            ),
-          )
-          .toList();
-      setState(() {});
+    // Sincronizar multiusuarios en el map
+    Timer.periodic(const Duration(seconds: 20), (timer) {
+      documentSubscription = FirebaseFirestore.instance
+          .collection('route')
+          .doc(routeNumber)
+          .collection('people')
+          .snapshots()
+          .listen((event) {
+        people = event.docs
+            .map(
+              (e) => Person(
+                e.id,
+                LatLng(e['lat'], e['lng']),
+              ),
+            )
+            .toList();
+        setState(() {});
+      });
     });
 
-    // Timer.periodic(const Duration(seconds: 20), (timer) { });
-    subscription = _location.onLocationChanged.listen((LocationData event) {
-      FirebaseFirestore.instance
-          .collection('route')
-          .doc('001')
-          .collection('people')
-          .doc(userId)
-          .set({
-        'lat': event.latitude,
-        'lng': event.longitude,
+    Timer.periodic(const Duration(seconds: 20), (timer) {
+      subscription = _location.onLocationChanged.listen((LocationData event) {
+        FirebaseFirestore.instance
+            .collection('route')
+            .doc('001')
+            .collection('people')
+            .doc(userId)
+            .set({
+          'lat': event.latitude,
+          'lng': event.longitude,
+        });
+        print('${event.latitude}, ${event.longitude}');
       });
-      print('${event.latitude}, ${event.longitude}');
     });
   }
 

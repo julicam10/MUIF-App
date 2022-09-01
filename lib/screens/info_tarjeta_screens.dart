@@ -1,11 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 class InfoTarjetaPage extends StatefulWidget {
   const InfoTarjetaPage({Key? key}) : super(key: key);
 
   @override
   State<InfoTarjetaPage> createState() => _InfoTarjetaPageState();
+}
+
+class Tarjeta {
+  final String numero;
+  final String nombre;
+  final String fecha;
+  final String codigo;
+  final String saldo;
+  Tarjeta(this.numero, this.nombre, this.fecha, this.codigo, this.saldo);
 }
 
 class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
@@ -17,15 +28,28 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
 
   var codeMask =
       MaskTextInputFormatter(mask: '###', filter: {"#": RegExp(r'[0-9]')});
+
+  var saldoMask = MaskTextInputFormatter(
+      mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});
+
   String nombre = '';
   String card = '';
   String fecha = '';
   String codigo = '';
+  int saldo = 0;
+  final String tarjetaId = Uuid().v1();
   final formKey = GlobalKey<FormState>();
   final nombreController = TextEditingController();
   final cardController = TextEditingController();
   final fechaController = TextEditingController();
   final codigoController = TextEditingController();
+  final saldoController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  //Agregar aca el correo del usuario
+  CollectionReference usuario =
+      FirebaseFirestore.instance.collection('correo@correo.com');
+
+  String tipo = '';
 
   @override
   void dispose() {
@@ -33,6 +57,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
     cardController.dispose();
     fechaController.dispose();
     codigoController.dispose();
+    saldoController.dispose();
     super.dispose();
   }
 
@@ -41,8 +66,25 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
     super.initState();
   }
 
+  Future<void> insertarTarjeta() {
+    return usuario
+        .doc(tarjetaId)
+        .set({
+          'codigo': codigoController.text,
+          'fecha': fechaController.text,
+          'nombre': nombreController.text,
+          'numero': cardController.text,
+          'saldo': saldoController.text,
+          'tipo': tipo
+        })
+        .then((value) => print("Tarjeta agregada"))
+        .catchError((error) => print("Error al agregar la tarjeta: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as String;
+    tipo = args.toString();
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -53,53 +95,85 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
               BackArrowButton(color: Theme.of(context).colorScheme.secondary),
         ),
         body: Center(
-          child: ListView(
-            children: [
-              Column(
-                children: [
-                  const TitleText(
-                    text: 'Ingrese la información de la tarjeta',
-                    color: Colors.black,
-                    size: 20,
-                  ),
-                  _creditCard(context),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: _inputNombre(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: _inputCard(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0, left: 25.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          child: _inputDate(),
-                        ),
-                        Container(
-                          child: _inputCode(),
-                        )
-                      ],
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    const TitleText(
+                      text: 'Ingrese la información de la tarjeta',
+                      color: Colors.black,
+                      size: 20,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 200.0),
-                    child: Hero(
-                      tag: 'boton',
-                      child: BotonWidget(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                        textColor: Theme.of(context).colorScheme.primary,
-                        text: 'Guardar',
-                        navigator: '/home',
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: TitleText(
+                        text: 'Tipo de tarjeta: ${args.toString()}',
+                        color: Colors.black,
+                        size: 18,
                       ),
                     ),
-                  )
-                ],
-              ),
-            ],
+                    _creditCard(context),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: _inputNombre(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: _inputCard(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: _inputSaldo(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0, left: 25.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            child: _inputDate(),
+                          ),
+                          Container(
+                            child: _inputCode(),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 150.0),
+                      child: Hero(
+                        tag: 'boton',
+                        child: SizedBox(
+                          height: 50,
+                          width: 270,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              onPrimary: Theme.of(context).colorScheme.primary,
+                              primary: Theme.of(context).colorScheme.secondary,
+                              textStyle: GoogleFonts.nunito(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: const Text('Continuar'),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                insertarTarjeta();
+                                Navigator.pushReplacementNamed(
+                                    context, '/home');
+                              } else {
+                                print('Algo salio mal');
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -107,6 +181,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   }
 
   Padding _creditCard(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as String;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Container(
@@ -184,6 +259,14 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                         color: Theme.of(context).colorScheme.secondary,
                         size: 17.0,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 60.0),
+                        child: TitleText(
+                          text: '${args.toString()}',
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 17.0,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -209,6 +292,12 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         keyboardType: TextInputType.name,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(fontSize: 20.0),
+        validator: (nombreInput) {
+          if (nombreInput!.isEmpty) {
+            return 'Por favor ingresa un nombre';
+          }
+          return null;
+        },
         onChanged: (nombreInput) {
           setState(() {
             nombre = nombreInput;
@@ -236,6 +325,14 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         inputFormatters: [cardMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 20.0),
+        validator: (cardInput) {
+          if (cardInput!.isEmpty) {
+            return 'Por favor ingresa un numero';
+          } else if (cardInput.contains('-')) {
+            return 'Por favor no ingrese un -';
+          }
+          return null;
+        },
         onChanged: (cardInput) {
           setState(() {
             card = cardInput;
@@ -263,6 +360,14 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         keyboardType: TextInputType.number,
         inputFormatters: [dateMask],
         style: const TextStyle(fontSize: 20.0),
+        validator: (dateInput) {
+          if (dateInput!.isEmpty) {
+            return 'Por favor ingresa una fecha';
+          } else if (dateInput.contains('-')) {
+            return 'Por favor no ingrese un -';
+          }
+          return null;
+        },
         onChanged: (dateInput) {
           setState(() {
             fecha = dateInput;
@@ -290,6 +395,14 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         inputFormatters: [codeMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 20.0),
+        validator: (codeInput) {
+          if (codeInput!.isEmpty) {
+            return 'Por favor ingresa un código';
+          } else if (codeInput.contains('-')) {
+            return 'Por favor no ingrese un -';
+          }
+          return null;
+        },
         onChanged: (codeInput) {
           setState(() {
             codigo = codeInput;
@@ -299,6 +412,36 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
           border: InputBorder.none,
           hintText: '***',
         ),
+      ),
+    );
+  }
+
+  Container _inputSaldo() {
+    return Container(
+      height: 50,
+      width: 350,
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      margin: const EdgeInsets.symmetric(horizontal: 15.0),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(50.0)),
+      child: TextFormField(
+        controller: saldoController,
+        inputFormatters: [saldoMask],
+        keyboardType: TextInputType.number,
+        style: const TextStyle(fontSize: 20.0),
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          hintText: 'Saldo',
+        ),
+        validator: (saldoInput) {
+          if (saldoInput!.isEmpty) {
+            return 'Por favor ingresa un saldo';
+          } else if (saldoInput.contains('-')) {
+            return 'Por favor no ingrese un -';
+          }
+          return null;
+        },
       ),
     );
   }
