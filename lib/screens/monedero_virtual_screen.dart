@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:muif_app/models/utilities.dart';
 import '../models/bar_code_text.dart';
 import '../widgets/widgets.dart';
@@ -14,6 +15,8 @@ String description = "Movilidad Urbana | Inteligente en Fusagasugá";
 String newDescription = description.replaceAll("|", "\n");
 
 class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
+  String monto = '0';
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as BarCodeText;
@@ -31,7 +34,7 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
           child: Column(
             children: [
               const TitleText(
-                text: 'Monedero Virtual MUIF',
+                text: 'Monedero Digital MUIF',
                 color: Colors.black,
                 size: 20,
               ),
@@ -98,16 +101,36 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                                 ),
                               ],
                             ),
-                            TitleText(
-                              text: 'Saldo: \$X.XXX',
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 17.0,
-                            ),
-                            TitleText(
-                              text: 'Código: XXXXXXXXXX',
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 17.0,
-                            ),
+                            SizedBox(
+                              height: 50,
+                              width: 200,
+                              child: StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection('usuarios')
+                                    .doc('correo@correo.com')
+                                    .collection('monedero')
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot>
+                                        streamSnapshot) {
+                                  if (!streamSnapshot.hasData) {
+                                    return Center(
+                                        child: Text('Saldo: \$${monto}'));
+                                  } else {
+                                    return ListView.builder(
+                                      itemCount:
+                                          streamSnapshot.data?.docs.length,
+                                      itemBuilder: (ctx, index) => TitleText(
+                                        text:
+                                            'Saldo: \$${streamSnapshot.data!.docs[index]['saldo'].toString()}',
+                                        color: Colors.black,
+                                        size: 15.0,
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            )
                           ],
                         ),
                       ),

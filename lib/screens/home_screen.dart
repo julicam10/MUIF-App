@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_null_comparison, no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'dart:async';
 
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   late StreamSubscription<QuerySnapshot> documentSubscription;
   List<Person> people = [];
   final String routeNumber = '001';
-  final String userId = Uuid().v1();
+  final String userId = const Uuid().v1();
   final _initialCameraPosition = const CameraPosition(
     target: LatLng(4.342518, -74.361593),
     zoom: 16,

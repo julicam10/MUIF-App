@@ -15,6 +15,7 @@ class AutorizacionPageState extends State<AutorizacionPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(

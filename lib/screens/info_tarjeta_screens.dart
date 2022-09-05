@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
@@ -29,15 +31,16 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   var codeMask =
       MaskTextInputFormatter(mask: '###', filter: {"#": RegExp(r'[0-9]')});
 
-  var saldoMask = MaskTextInputFormatter(
-      mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});
+  // var saldoMask = MaskTextInputFormatter(
+  //     mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});
 
   String nombre = '';
   String card = '';
   String fecha = '';
   String codigo = '';
+  String tipo = '';
   int saldo = 0;
-  final String tarjetaId = Uuid().v1();
+  final String tarjetaId = const Uuid().v1();
   final formKey = GlobalKey<FormState>();
   final nombreController = TextEditingController();
   final cardController = TextEditingController();
@@ -46,10 +49,8 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   final saldoController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   //Agregar aca el correo del usuario
-  CollectionReference usuario =
-      FirebaseFirestore.instance.collection('correo@correo.com');
-
-  String tipo = '';
+  CollectionReference usuarios =
+      FirebaseFirestore.instance.collection('usuarios');
 
   @override
   void dispose() {
@@ -67,7 +68,9 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   }
 
   Future<void> insertarTarjeta() {
-    return usuario
+    return usuarios
+        .doc('correo@correo.com')
+        .collection('tarjetas')
         .doc(tarjetaId)
         .set({
           'codigo': codigoController.text,
@@ -124,7 +127,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                       child: _inputCard(),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: _inputSaldo(),
                     ),
                     Padding(
@@ -159,11 +162,12 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                             child: const Text('Continuar'),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
+                                openDialog('¡Tarjeta registrada con exito!');
                                 insertarTarjeta();
                                 Navigator.pushReplacementNamed(
                                     context, '/home');
                               } else {
-                                print('Algo salio mal');
+                                openDialog('¡Hubo un error! Intente de nuevo');
                               }
                             },
                           ),
@@ -262,7 +266,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 60.0),
                         child: TitleText(
-                          text: '${args.toString()}',
+                          text: args.toString(),
                           color: Theme.of(context).colorScheme.secondary,
                           size: 17.0,
                         ),
@@ -277,6 +281,27 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
       ),
     );
   }
+
+  Future openDialog(String mensajeEstado) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(mensajeEstado),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(color: Colors.black),
+              ),
+            )
+          ],
+        ),
+      );
 
   Container _inputNombre() {
     return Container(
@@ -427,7 +452,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
           borderRadius: BorderRadius.circular(50.0)),
       child: TextFormField(
         controller: saldoController,
-        inputFormatters: [saldoMask],
+        // inputFormatters: [saldoMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 20.0),
         decoration: const InputDecoration(
@@ -437,8 +462,6 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         validator: (saldoInput) {
           if (saldoInput!.isEmpty) {
             return 'Por favor ingresa un saldo';
-          } else if (saldoInput.contains('-')) {
-            return 'Por favor no ingrese un -';
           }
           return null;
         },
