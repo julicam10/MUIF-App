@@ -35,6 +35,7 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
         .collection('tarjetas')
         .get()
         .then(
+          // ignore: avoid_function_literals_in_foreach_calls
           (snapshot) => snapshot.docs.forEach(
             (document) {
               docIDS.add(document.reference.id);

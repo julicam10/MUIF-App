@@ -24,6 +24,7 @@ class Person {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool ejecutarLectura = true;
   late GoogleMapController _mapController;
   final Location _location = Location();
   late StreamSubscription<LocationData> subscription;
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    //_initLocation();
+    _initLocation();
   }
 
   @override
@@ -65,23 +66,21 @@ class _HomePageState extends State<HomePage> {
       }
     }
     // Sincronizar multiusuarios en el map
-    Timer.periodic(const Duration(seconds: 20), (timer) {
-      documentSubscription = FirebaseFirestore.instance
-          .collection('route')
-          .doc(routeNumber)
-          .collection('people')
-          .snapshots()
-          .listen((event) {
-        people = event.docs
-            .map(
-              (e) => Person(
-                e.id,
-                LatLng(e['lat'], e['lng']),
-              ),
-            )
-            .toList();
-        setState(() {});
-      });
+    documentSubscription = FirebaseFirestore.instance
+        .collection('route')
+        .doc(routeNumber)
+        .collection('people')
+        .snapshots()
+        .listen((event) {
+      people = event.docs
+          .map(
+            (e) => Person(
+              e.id,
+              LatLng(e['lat'], e['lng']),
+            ),
+          )
+          .toList();
+      setState(() {});
     });
 
     Timer.periodic(const Duration(seconds: 20), (timer) {

@@ -39,11 +39,10 @@ class MyApp extends StatelessWidget {
         '/barCode': (context) => const BarCodePage(),
         '/seleccionarInformacion': (context) =>
             const SeleccionarInformacionPage(),
-        '/pagarPasaje': (context) => const PagarPasajePage(),
         '/monederoVirtual': (context) => const MonederoVirtualPage(),
         '/autorizacion': (context) => const AutorizacionPage(),
-        '/comprobantePago': (context) => const ComprobantePagoPage(),
         '/montoRecargar': (context) => const MontoRecargarPage(),
+        '/comprobantePago': (context) => const ComprobantePagoPage(),
       },
       theme: ThemeData(
         colorScheme: const ColorScheme.highContrastLight(

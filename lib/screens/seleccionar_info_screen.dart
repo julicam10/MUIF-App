@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:muif_app/models/utilities.dart';
+import 'package:muif_app/screens/pagar_pasaje_screen.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
 class SeleccionarInformacionPage extends StatefulWidget {
@@ -12,7 +15,6 @@ class SeleccionarInformacionPage extends StatefulWidget {
 class SeleccionarInformacionPageState
     extends State<SeleccionarInformacionPage> {
   String selectedValuePasajes = "1";
-  String selectedValueCuotas = "1";
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(value: "1", child: Text("1")),
@@ -72,6 +74,7 @@ class SeleccionarInformacionPageState
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedValuePasajes = newValue!;
+                      print('valor seleccionado: $selectedValuePasajes');
                     });
                   },
                   items: dropdownItems,
@@ -83,15 +86,35 @@ class SeleccionarInformacionPageState
               child: Center(
                 child: Hero(
                   tag: 'boton',
-                  child: BotonWidget(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    textColor: Theme.of(context).colorScheme.primary,
-                    text: 'Continuar',
-                    navigator: '/pagarPasaje',
+                  child: SizedBox(
+                    height: 50,
+                    width: 270,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary,
+                      ),
+                      child: TitleText(
+                        text: 'Continuar',
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 20.0,
+                      ),
+                      onPressed: () {
+                        int cantidadPasajes = int.parse(selectedValuePasajes);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PagarPasajePage(
+                              cantidadPasajes: cantidadPasajes,
+                              totalAPagar: cantidadPasajes * 1850,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

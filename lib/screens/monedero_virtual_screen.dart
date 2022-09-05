@@ -139,7 +139,7 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: 10.0),
                 child: TitleText(
                   text: 'Historial de movimientos',
                   color: Colors.black,
@@ -147,7 +147,78 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 330),
+                padding: const EdgeInsets.only(top: 10.0),
+                child: SizedBox(
+                  height: 350,
+                  width: 300,
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('usuarios')
+                        .doc('correo@correo.com')
+                        .collection('historial')
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      if (!streamSnapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        return ListView.builder(
+                          itemCount: streamSnapshot.data?.docs.length,
+                          itemBuilder: (ctx, index) => Container(
+                            height: 75.0,
+                            width: 50.0,
+                            margin: const EdgeInsets.only(top: 10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color.fromRGBO(82, 150, 250, 0.2),
+                                  Color.fromRGBO(0, 98, 189, 1),
+                                ],
+                                stops: [0.1, 0.9],
+                                begin: FractionalOffset.topLeft,
+                                end: FractionalOffset.bottomRight,
+                              ),
+                            ),
+                            child: ListTile(
+                              title: NormalText(
+                                text:
+                                    'Fecha: ${streamSnapshot.data?.docs[index]['fecha']}',
+                                color: Colors.black,
+                                size: 15.0,
+                              ),
+                              subtitle: TitleText(
+                                text:
+                                    'Cantidad de pasajes: ${streamSnapshot.data!.docs[index]['numeroPasajes'].toString()}',
+                                color: Colors.black,
+                                size: 15.0,
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const TitleText(
+                                    text: 'Total pago:',
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                  TitleText(
+                                    text:
+                                        '\$${streamSnapshot.data!.docs[index]['total'].toString()}',
+                                    color: Colors.white,
+                                    size: 15.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
                 child: Center(
                   child: Text.rich(
                     TextSpan(
@@ -176,7 +247,7 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 40.0),
+                padding: const EdgeInsets.only(top: 15.0),
                 child: SizedBox(
                   height: 50,
                   width: 270,

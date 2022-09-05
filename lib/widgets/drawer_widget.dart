@@ -118,10 +118,6 @@ class _DrawerHeader extends StatelessWidget {
                     fontSize: 18.0,
                   ),
                 ),
-                // Image(
-                //   image: AssetImage('assets/img/iconFlutter.png'),
-                //   fit: BoxFit.contain,
-                // )
               ],
             )
           ],

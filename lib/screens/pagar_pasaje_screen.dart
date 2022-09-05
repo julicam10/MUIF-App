@@ -1,22 +1,79 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:muif_app/models/utilities.dart';
+import 'package:muif_app/screens/screens_screen.dart';
 import 'package:muif_app/widgets/widgets.dart';
+import 'package:uuid/uuid.dart';
 
 class PagarPasajePage extends StatefulWidget {
-  const PagarPasajePage({Key? key}) : super(key: key);
+  const PagarPasajePage(
+      {Key? key, required this.cantidadPasajes, required this.totalAPagar})
+      : super(key: key);
+  final int cantidadPasajes;
+  final int totalAPagar;
 
   @override
   State<PagarPasajePage> createState() => _PagarPasajePageState();
 }
 
 class _PagarPasajePageState extends State<PagarPasajePage> {
+  String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+  final String historialId = const Uuid().v1();
   bool _estaActivo = false;
+  int cantidad = 0;
+  int saldo = 0;
+  int totalAPagar = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  CollectionReference instanciaUsuario =
+      FirebaseFirestore.instance.collection('usuarios');
+
+  Future<void> getAndUpdateSaldo() {
+    cantidad = int.parse(widget.cantidadPasajes.toString());
+    final sfDocRef = instanciaUsuario
+        .doc('correo@correo.com')
+        .collection('monedero')
+        .doc('unico');
+    return FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshot = await transaction.get(sfDocRef);
+      saldo = snapshot.get("saldo");
+      totalAPagar = int.parse(widget.totalAPagar.toString());
+      if (totalAPagar > saldo) {
+        saldoInsuficienteDialog();
+        return;
+      } else {
+        final int nuevoSaldo = saldo - totalAPagar;
+        transaction.update(sfDocRef, {"saldo": nuevoSaldo});
+        insertarRegistroHistorial();
+        _navegar();
+      }
+    });
+  }
+
+  void _navegar() {
+    Navigator.pushNamed(context, '/comprobantePago', arguments: cantidad);
+  }
+
+  Future<void> insertarRegistroHistorial() {
+    return instanciaUsuario
+        .doc('correo@correo.com')
+        .collection('historial')
+        .doc(historialId)
+        .set({
+          'fecha': fecha,
+          'numeroPasajes': cantidad,
+          'total': totalAPagar,
+        })
+        .then((value) => print("Agregado al historial"))
+        .catchError((error) => print("Error al agregar al historial: $error"));
+  }
+
   @override
   Widget build(BuildContext context) {
-    String valor = '${'xxxx'} COP';
-    String cantidadPasajes = 'X';
-    String numerosFinales = 'XXX';
-    String banco = 'XXX';
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -39,13 +96,13 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Center(
                 child: TitleText(
-                  text: '${'xxxx'} COP',
+                  text: '\$ ${widget.totalAPagar} COP',
                   color: Colors.black,
-                  size: 20.0,
+                  size: 25.0,
                 ),
               ),
             ),
@@ -53,13 +110,17 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
               padding:
                   const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
               child: Row(
-                children: const [
-                  NormalText(
+                children: [
+                  const NormalText(
                     text: 'Cantidad de pasajes: ',
                     color: Colors.grey,
-                    size: 15.0,
+                    size: 20.0,
                   ),
-                  NormalText(text: 'X', color: Colors.black, size: 15.0)
+                  NormalText(
+                    text: widget.cantidadPasajes.toString(),
+                    color: Colors.black,
+                    size: 20.0,
+                  )
                 ],
               ),
             ),
@@ -74,23 +135,14 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+              padding: const EdgeInsets.only(
+                  top: 5.0, left: 20.0, right: 20.0, bottom: 30.0),
               child: Row(
                 children: const [
                   NormalText(
-                      text: 'Terminado en ', color: Colors.grey, size: 15.0),
-                  TitleText(text: 'XXXX', color: Colors.black, size: 15.0)
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 5.0, bottom: 50.0, left: 20.0, right: 20.0),
-              child: Row(
-                children: const [
-                  NormalText(text: 'Banco ', color: Colors.grey, size: 15.0),
-                  TitleText(text: 'XXXX', color: Colors.black, size: 15.0)
+                      text: 'Monedero MUIF APP ',
+                      color: Colors.grey,
+                      size: 18.0),
                 ],
               ),
             ),
@@ -113,7 +165,7 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
                         checkColor: Theme.of(context).colorScheme.primary,
                         activeColor: Theme.of(context).colorScheme.secondary,
                         title: const NormalText(
-                          text: 'Estoy de acuerdo en realizar la transferencia',
+                          text: 'Estoy de acuerdo en realizar el pago',
                           color: Colors.white,
                           size: 20.0,
                         ),
@@ -124,15 +176,29 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 250.0),
+                      padding: const EdgeInsets.only(top: 300.0),
                       child: Hero(
                         tag: 'boton',
-                        child: BotonWidget(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          textColor: Theme.of(context).colorScheme.primary,
-                          text: 'Pagar',
-                          navigator: '/comprobantePago',
+                        child: SizedBox(
+                          height: 50,
+                          width: 270,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Theme.of(context).colorScheme.secondary,
+                            ),
+                            child: TitleText(
+                              text: 'Pagar',
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 20.0,
+                            ),
+                            onPressed: () {
+                              if (_estaActivo == true) {
+                                getAndUpdateSaldo();
+                              } else {
+                                comprobanteDialog();
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -145,4 +211,48 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
       ),
     );
   }
+
+  Future comprobanteDialog() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title:
+              const Text('Primero debes estar de acuerdo con la transferencia'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+              ),
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
+      );
+
+  Future saldoInsuficienteDialog() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text(
+              'No cuentas con suficiente saldo en tu monedero MUIF para realizar la transacción'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+              ),
+              child: const Text(
+                'Continuar',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
+      );
 }

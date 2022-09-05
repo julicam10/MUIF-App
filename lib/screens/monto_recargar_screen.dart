@@ -26,17 +26,6 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
   CollectionReference instanciaUsuario =
       FirebaseFirestore.instance.collection('usuarios');
 
-  // Se puede borrar
-  // updateUser() {
-  //   return instanciaUsuario
-  //       .doc('correo@correo.com')
-  //       .collection('monedero')
-  //       .doc('unico')
-  //       .update({'saldo': montoController.text})
-  //       .then((value) => print("Saldo actualizado"))
-  //       .catchError((error) => print("Error al actualizar el saldo: $error"));
-  // }
-
   // var montoMask = MaskTextInputFormatter(
   //     mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});
   @override
@@ -123,7 +112,6 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
           borderRadius: BorderRadius.circular(50.0)),
       child: TextFormField(
         controller: montoController,
-        // inputFormatters: [montoMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 20.0),
         validator: (montoInput) {

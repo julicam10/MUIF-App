@@ -1,22 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:muif_app/widgets/widgets.dart';
-
 import '../models/utilities.dart';
 
 class ComprobantePagoPage extends StatefulWidget {
   const ComprobantePagoPage({Key? key}) : super(key: key);
-
+  static const routeName = '/comprobantePago';
   @override
   State<ComprobantePagoPage> createState() => _ComprobantePagoPageState();
 }
 
-String fecha = 'dd/mm/aaaa';
+final DateTime now = DateTime.now();
+String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
 String correo = 'ejemplo@correo.com';
-String cantidadPasajes = 'xxx';
-String totalPagar = '\$xxxx COP';
+int totalPagar = 0;
 
 class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
   @override
   Widget build(BuildContext context) {
+    final info = ModalRoute.of(context)!.settings.arguments;
+    int infoInt = int.parse(info.toString());
+    totalPagar = infoInt * 1850;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -61,19 +65,57 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
-                      children: const [
-                        _BannerRowWidget(),
-                        Divider(
+                      children: [
+                        _rowBanner(),
+                        const Divider(
                           color: Colors.black,
                           height: 1.0,
                           thickness: 1.0,
                         ),
-                        _FilaOrigenDestino(),
-                        _ColumnaFecha(),
-                        _ColumnaCorreo(),
-                        _ColumnaCantidadPasajes(),
-                        _ColumnaTotalPagar(),
-                        _ColumnaSaldo(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Column(
+                            children: [
+                              _rowRuta(),
+                              Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: _rowPuntosRuta())
+                            ],
+                          ),
+                        ),
+                        _fecha(),
+                        _correo(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: Column(
+                            children: [
+                              const TitleText(
+                                  text: 'Cantidad de pasajes',
+                                  color: Colors.black,
+                                  size: 20.0),
+                              NormalText(
+                                  text: info.toString(),
+                                  color: Colors.black,
+                                  size: 15.0)
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: Column(
+                            children: [
+                              const TitleText(
+                                  text: 'Total a pagar',
+                                  color: Colors.black,
+                                  size: 20.0),
+                              NormalText(
+                                  text: '\$ ${totalPagar.toString()}',
+                                  color: Colors.black,
+                                  size: 15.0)
+                            ],
+                          ),
+                        ),
+                        _saldo(),
                       ],
                     ),
                   ),
@@ -85,15 +127,8 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
       ),
     );
   }
-}
 
-class _BannerRowWidget extends StatelessWidget {
-  const _BannerRowWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _rowBanner() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -109,98 +144,62 @@ class _BannerRowWidget extends StatelessWidget {
         Column(
           children: const [
             TitleText(text: 'MUIF APP', color: Colors.black, size: 20.0),
-            NormalText(
-                text: 'Número de pago: XXX', color: Colors.black, size: 15.0)
           ],
         ),
         const Icon(Icons.check_circle, color: Colors.green, size: 40.0),
       ],
     );
   }
-}
 
-class _FilaOrigenDestino extends StatelessWidget {
-  const _FilaOrigenDestino({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              TitleText(text: 'La Pampa', color: Colors.black, size: 20.0),
-              TitleText(text: 'Terminal', color: Colors.black, size: 20.0),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 70.0),
-                  child: Container(
-                    height: 20.0,
-                    width: 20.0,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 135.0,
-                  height: 1.0,
-                  color: Colors.black45,
-                ),
-                Container(
-                  height: 20.0,
-                  width: 20.0,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-              ],
+  Widget _rowPuntosRuta() {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 70.0),
+          child: Container(
+            height: 20.0,
+            width: 20.0,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(20.0),
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+        Container(
+          width: 135.0,
+          height: 1.0,
+          color: Colors.black45,
+        ),
+        Container(
+          height: 20.0,
+          width: 20.0,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+        ),
+      ],
     );
   }
-}
 
-class _ColumnaFecha extends StatelessWidget {
-  const _ColumnaFecha({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _fecha() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const TitleText(text: 'Fecha', color: Colors.black, size: 20.0),
-          NormalText(text: fecha, color: Colors.black, size: 15.0)
+          NormalText(
+            text: fecha,
+            color: Colors.black,
+            size: 15.0,
+          )
         ],
       ),
     );
   }
-}
 
-class _ColumnaCorreo extends StatelessWidget {
-  const _ColumnaCorreo({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _correo() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Column(
@@ -211,63 +210,61 @@ class _ColumnaCorreo extends StatelessWidget {
       ),
     );
   }
-}
 
-class _ColumnaCantidadPasajes extends StatelessWidget {
-  const _ColumnaCantidadPasajes({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
-      child: Column(
-        children: [
-          const TitleText(
-              text: 'Cantidad de pasajes', color: Colors.black, size: 20.0),
-          NormalText(text: cantidadPasajes, color: Colors.black, size: 15.0)
-        ],
-      ),
-    );
-  }
-}
-
-class _ColumnaTotalPagar extends StatelessWidget {
-  const _ColumnaTotalPagar({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
-      child: Column(
-        children: [
-          const TitleText(
-              text: 'Total a pagar', color: Colors.black, size: 20.0),
-          NormalText(text: totalPagar, color: Colors.black, size: 15.0)
-        ],
-      ),
-    );
-  }
-}
-
-class _ColumnaSaldo extends StatelessWidget {
-  const _ColumnaSaldo({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _saldo() {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: Column(
         children: [
           const TitleText(text: 'Tu saldo', color: Colors.black, size: 20.0),
-          NormalText(text: totalPagar, color: Colors.black, size: 15.0)
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 55.0,
+            ),
+            child: SizedBox(
+              height: 30,
+              width: 100,
+              child: Center(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('usuarios')
+                      .doc('correo@correo.com')
+                      .collection('monedero')
+                      .snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    if (!streamSnapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ListView.builder(
+                        itemCount: streamSnapshot.data?.docs.length,
+                        itemBuilder: (ctx, index) => NormalText(
+                          text:
+                              '\$${streamSnapshot.data!.docs[index]['saldo'].toString()}',
+                          color: Colors.black,
+                          size: 15.0,
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _rowRuta() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: const [
+        TitleText(text: 'La Pampa', color: Colors.black, size: 20.0),
+        TitleText(text: 'Terminal', color: Colors.black, size: 20.0),
+      ],
     );
   }
 }

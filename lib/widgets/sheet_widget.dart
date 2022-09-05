@@ -307,7 +307,7 @@ class _SecondRow extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, top: 0.0),
+            padding: const EdgeInsets.only(left: 20.0, top: 0.0, right: 230),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -324,25 +324,6 @@ class _SecondRow extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 130.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  child: Text(
-                    'Pagar pasaje',
-                    style: GoogleFonts.sourceSerifPro(
-                      color: const Color(0xFF3D73DD),
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
