@@ -8,6 +8,8 @@ void main() async {
   runApp(const MyApp());
 }
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -26,10 +28,13 @@ class MyApp extends StatelessWidget {
       //     const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
       //   ],
       // ),
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
+
       initialRoute: '/',
       routes: {
-        '/': (context) => const InicioSesionPage(),
+        '/': (context) => const Inicio(),
+        '/iniciarSesion': (context) => const InicioSesionPage(),
         '/recuperarContrasena': (context) => const RecuperarContrasenaPage(),
         '/registro': (context) => const RegistroPage(),
         '/home': (context) => const HomePage(),

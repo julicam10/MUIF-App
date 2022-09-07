@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
@@ -48,11 +49,20 @@ class SideMenu extends StatelessWidget {
             ),
             child: SizedBox(
               width: 100,
-              child: BotonWidget(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                textColor: Theme.of(context).colorScheme.primary,
-                text: 'Cerrar sesión',
-                navigator: '/',
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.secondary,
+                ),
+                child: TitleText(
+                  text: 'Cerrar sesión',
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20.0,
+                ),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushNamed(context, '/');
+                },
               ),
             ),
           )

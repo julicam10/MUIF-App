@@ -38,7 +38,6 @@ class EmailWidget extends StatelessWidget {
           hintStyle: TextStyle(color: colorLabel),
           labelStyle: TextStyle(color: colorHint),
         ),
-        onSaved: (val) => email = val!,
         validator: (val) {
           if (!val!.contains('@') || !val.contains('.')) {
             return 'Invalid Email';

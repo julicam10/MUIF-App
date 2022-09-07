@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
-
-import 'package:muif_app/widgets/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 
 class InicioSesionPage extends StatefulWidget {
@@ -11,21 +10,56 @@ class InicioSesionPage extends StatefulWidget {
   State<InicioSesionPage> createState() => _InicioSesionPageState();
 }
 
-String email = '';
-String password = '';
-bool selectedValue = true;
-
 class _InicioSesionPageState extends State<InicioSesionPage> {
+  String email = '';
+  String password = '';
+  bool selectedValue = true;
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final scaffolKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _emailController.clear();
+    _passwordController.clear();
+    super.dispose();
+  }
+
+  Future _iniciarSesion(context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      _navegar(context);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error en la información ingresada'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  _navegar(context) {
+    Navigator.pushNamed(context, '/home');
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print(size.height);
-    print(size.width);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -74,56 +108,90 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                         ? size.height * 0.003
                         : size.height * 0.005,
                   ),
-                  child: EmailWidget(
-                    emailController: emailController,
-                    colorHint: Theme.of(context).colorScheme.onSecondary,
-                    colorLabel: Colors.grey.shade600,
-                    colorIcon: Theme.of(context).colorScheme.onSecondary,
-                    colorCursor: Colors.grey.shade600,
-                    textStyle: Theme.of(context).colorScheme.onSecondary,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 15,
-                    right: 30,
-                    top: size.height < 800
-                        ? size.height * 0.02
-                        : size.height * 0.03,
-                  ),
-                  child: TextFormField(
-                    obscureText: selectedValue,
-                    controller: passwordController,
-                    validator: (passwordOne) {
-                      if (passwordOne!.isEmpty) {
-                        return 'Por favor ingresa tu contraseña';
-                      }
-                      return null;
-                    },
-                    onSaved: (passwordOne) {
-                      passwordOne = passwordOne!;
-                      print(passwordOne);
-                    },
-                    decoration: InputDecoration(
-                      icon: const Icon(Icons.lock),
-                      hintText: 'Contraseña',
-                      labelText: 'Contraseña',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          selectedValue
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          semanticLabel: selectedValue
-                              ? 'Contraseña oculta'
-                              : 'Contraseña visible',
+                  child: SizedBox(
+                    //Key?
+                    // child: Form(
+                    //   key: _formKey,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 15, right: 30, top: 25),
+                          child: TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            cursorColor: Colors.black,
+                            decoration: InputDecoration(
+                              icon: const Icon(
+                                Icons.alternate_email_outlined,
+                              ),
+                              hintText: 'correo@ejemplo.com',
+                              labelText: 'Correo electrónico',
+                              suffixIconColor: Colors.white,
+                              hintStyle: TextStyle(
+                                color: Colors.grey.shade600,
+                              ),
+                              labelStyle: TextStyle(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                            onSaved: (val) => email = val!,
+                            validator: (val) {
+                              if (!val!.contains('@') || !val.contains('.')) {
+                                return 'Invalid Email';
+                              } else {
+                                return null;
+                              }
+                            },
+                            // onChanged: (value) => print(value), Verificación de entrada de texto
+                          ),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            selectedValue ^= true;
-                          });
-                        },
-                      ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 15,
+                            right: 30,
+                            top: size.height < 800
+                                ? size.height * 0.02
+                                : size.height * 0.03,
+                          ),
+                          child: TextFormField(
+                            obscureText: selectedValue,
+                            controller: _passwordController,
+                            validator: (passwordOne) {
+                              if (passwordOne!.isEmpty) {
+                                return 'Por favor ingresa tu contraseña';
+                              }
+                              return null;
+                            },
+                            onSaved: (passwordOne) {
+                              passwordOne = passwordOne!;
+                              print(passwordOne);
+                            },
+                            decoration: InputDecoration(
+                              icon: const Icon(Icons.lock),
+                              hintText: 'Contraseña',
+                              labelText: 'Contraseña',
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  selectedValue
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  semanticLabel: selectedValue
+                                      ? 'Contraseña oculta'
+                                      : 'Contraseña visible',
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    selectedValue ^= true;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    // ),
                   ),
                 ),
                 Padding(
@@ -160,17 +228,28 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   padding: EdgeInsets.only(
                       top: size.height < 800
                           ? size.height * 0.03
-                          : size.height * 0.07),
+                          : size.height * 0.05),
                   child: Center(
                     child: Hero(
                       tag: 'boton',
                       child: Center(
-                        child: BotonWidget(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          textColor: Theme.of(context).colorScheme.primary,
-                          text: 'Iniciar sesión',
-                          navigator: '/home',
+                        child: SizedBox(
+                          height: 50,
+                          width: 270,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              onPrimary: Theme.of(context).colorScheme.primary,
+                              primary: Theme.of(context).colorScheme.secondary,
+                              textStyle: GoogleFonts.nunito(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: const Text('Iniciar sesión'),
+                            onPressed: () {
+                              _iniciarSesion(context);
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -180,7 +259,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                   padding: EdgeInsets.only(
                       top: size.height < 800
                           ? size.height * 0.03
-                          : size.height * 0.07),
+                          : size.height * 0.03),
                   child: Center(
                     child: Text.rich(
                       TextSpan(

@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muif_app/widgets/widgets.dart';
+
+import '../models/utilities.dart';
 
 class RecuperarContrasenaPage extends StatefulWidget {
   const RecuperarContrasenaPage({Key? key}) : super(key: key);
@@ -13,6 +16,33 @@ class RecuperarContrasenaPage extends StatefulWidget {
 class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
   String email = '';
   final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  Future _restablecerContrasena() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Correo enviado'),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ocurrio un error, intente nuevamente'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -77,13 +107,36 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                           ? size.height * 0.06
                           : size.height * 0.06,
                     ),
-                    child: EmailWidget(
-                      emailController: emailController,
-                      colorHint: Colors.white,
-                      colorLabel: Colors.white,
-                      colorIcon: Colors.white,
-                      colorCursor: Colors.white,
-                      textStyle: Colors.white,
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15, right: 30, top: 25),
+                      child: TextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        cursorColor: Colors.white,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: const InputDecoration(
+                          icon: Icon(Icons.alternate_email_outlined,
+                              color: Colors.white),
+                          hintText: 'correo@ejemplo.com',
+                          labelText: 'Correo electrónico',
+                          suffixIconColor: Colors.white,
+                          hintStyle: TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: Colors.white),
+                        ),
+                        onSaved: (val) => email = val!,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (val) {
+                          if (!val!.contains('@') || !val.contains('.')) {
+                            return 'Invalid Email';
+                          } else {
+                            return null;
+                          }
+                        },
+                        // onChanged: (value) => print(value), Verificación de entrada de texto
+                      ),
                     ),
                   ),
                   Padding(
@@ -96,12 +149,23 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                       alignment: Alignment.bottomCenter,
                       child: Hero(
                         tag: 'boton',
-                        child: BotonWidget(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          textColor: Theme.of(context).colorScheme.primary,
-                          text: 'Enviar correo',
-                          navigator: '/home',
+                        child: SizedBox(
+                          height: 50,
+                          width: 270,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              onPrimary: Theme.of(context).colorScheme.primary,
+                              primary: Theme.of(context).colorScheme.secondary,
+                              textStyle: GoogleFonts.nunito(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            child: const Text('Recuperar contraseña'),
+                            onPressed: () {
+                              _restablecerContrasena();
+                            },
+                          ),
                         ),
                       ),
                     ),

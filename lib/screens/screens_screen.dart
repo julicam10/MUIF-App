@@ -13,3 +13,5 @@ export 'package:muif_app/screens/autorizacion_screen.dart';
 export 'package:muif_app/screens/comprobate_pago_screen.dart';
 export 'package:muif_app/screens/eleccion_screen.dart';
 export 'package:muif_app/screens/monto_recargar_screen.dart';
+export 'package:muif_app/screens/inicio_screen.dart';
+export 'package:muif_app/screens/verificar_email_screen.dart';
