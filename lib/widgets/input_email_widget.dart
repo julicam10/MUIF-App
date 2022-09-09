@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:muif_app/screens/screens_screen.dart';
 
 class EmailWidget extends StatelessWidget {
   const EmailWidget({

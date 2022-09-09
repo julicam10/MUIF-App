@@ -2,15 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
-import '../models/bar_code_text.dart';
-
-class SideMenu extends StatelessWidget {
-  const SideMenu({Key? key}) : super(key: key);
+class SideMenuConductor extends StatelessWidget {
+  const SideMenuConductor({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    String barcodeScanRes = '0';
     return Drawer(
       elevation: 10.0,
       child: ListView(
@@ -18,32 +15,13 @@ class SideMenu extends StatelessWidget {
         children: [
           const _DrawerHeader(),
           const _ListTileMenu(
-            icon: Icons.credit_card,
-            text: 'Mis tarjetas',
-            navegacion: '/tusTarjetas',
-          ),
-          const _ListTileMenu(
-            icon: Icons.qr_code_2_rounded,
-            text: 'Escanear código QR',
-            navegacion: '/barCode',
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.wallet,
-              color: Colors.black,
-              size: 40.0,
-            ),
-            title: const TitleText(
-                color: Colors.black, text: 'Monedero virtual', size: 20.0),
-            onTap: () => Navigator.pushNamed(
-              context,
-              '/monederoVirtual',
-              arguments: BarCodeText(barcodeScanRes),
-            ),
+            icon: Icons.history_edu_outlined,
+            text: 'Consultar pagos',
+            navegacion: '/consultarPagos',
           ),
           Padding(
             padding: EdgeInsets.only(
-              top: size.height < 800 ? size.height * 0.39 : size.height * 0.45,
+              top: size.height < 800 ? size.height * 0.45 : size.height * 0.60,
               left: size.width < 390 ? size.width * 0.1 : size.width * 0.05,
               right: size.width < 390 ? size.width * 0.1 : size.width * 0.05,
             ),

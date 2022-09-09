@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
@@ -49,8 +50,9 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   final saldoController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   //Agregar aca el correo del usuario
-  CollectionReference usuarios =
-      FirebaseFirestore.instance.collection('usuarios');
+  CollectionReference instancia =
+      FirebaseFirestore.instance.collection('users');
+  User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void dispose() {
@@ -68,8 +70,9 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   }
 
   Future<void> insertarTarjeta() {
-    return usuarios
-        .doc('correo@correo.com')
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
         .collection('tarjetas')
         .doc(tarjetaId)
         .set({
@@ -77,7 +80,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
           'fecha': fechaController.text,
           'nombre': nombreController.text,
           'numero': cardController.text,
-          'saldo': saldoController.text,
+          'saldo': int.parse(saldoController.text),
           'tipo': tipo
         })
         .then((value) => print("Tarjeta agregada"))

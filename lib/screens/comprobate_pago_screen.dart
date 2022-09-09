@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:muif_app/widgets/widgets.dart';
 import '../models/utilities.dart';
@@ -10,9 +11,9 @@ class ComprobantePagoPage extends StatefulWidget {
   State<ComprobantePagoPage> createState() => _ComprobantePagoPageState();
 }
 
+User? user = FirebaseAuth.instance.currentUser;
 final DateTime now = DateTime.now();
 String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
-String correo = 'ejemplo@correo.com';
 int totalPagar = 0;
 
 class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
@@ -205,7 +206,8 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
       child: Column(
         children: [
           const TitleText(text: 'Correo', color: Colors.black, size: 20.0),
-          NormalText(text: correo, color: Colors.black, size: 15.0)
+          NormalText(
+              text: user!.email.toString(), color: Colors.black, size: 15.0)
         ],
       ),
     );
@@ -227,8 +229,8 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
               child: Center(
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection('usuarios')
-                      .doc('correo@correo.com')
+                      .collection('users')
+                      .doc(user!.uid)
                       .collection('monedero')
                       .snapshots(),
                   builder:

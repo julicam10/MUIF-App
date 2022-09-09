@@ -48,6 +48,9 @@ class MyApp extends StatelessWidget {
         '/autorizacion': (context) => const AutorizacionPage(),
         '/montoRecargar': (context) => const MontoRecargarPage(),
         '/comprobantePago': (context) => const ComprobantePagoPage(),
+        '/eleccionRol': (context) => const EleccioRolPage(),
+        '/homeConductor': (context) => const HomeConductorPage(),
+        '/consultarPagos': (context) => const ConsultarPagosPage(),
       },
       theme: ThemeData(
         colorScheme: const ColorScheme.highContrastLight(

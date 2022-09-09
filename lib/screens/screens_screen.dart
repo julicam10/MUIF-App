@@ -15,3 +15,6 @@ export 'package:muif_app/screens/eleccion_screen.dart';
 export 'package:muif_app/screens/monto_recargar_screen.dart';
 export 'package:muif_app/screens/inicio_screen.dart';
 export 'package:muif_app/screens/verificar_email_screen.dart';
+export 'package:muif_app/screens/home_conductor_screen.dart';
+export 'package:muif_app/screens/eleccion_rol_screen.dart';
+export 'package:muif_app/screens/consultar_pagos_screen.dart';

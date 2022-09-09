@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: avoid_print
 
 import '../models/utilities.dart';
 import '../widgets/widgets.dart';
@@ -22,9 +22,6 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
     super.dispose();
     montoController.clear();
   }
-
-  CollectionReference instanciaUsuario =
-      FirebaseFirestore.instance.collection('usuarios');
 
   // var montoMask = MaskTextInputFormatter(
   //     mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});

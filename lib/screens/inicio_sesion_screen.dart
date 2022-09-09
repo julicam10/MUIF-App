@@ -14,7 +14,6 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
   String email = '';
   String password = '';
   bool selectedValue = true;
-  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final scaffolKey = GlobalKey<ScaffoldState>();
@@ -54,7 +53,7 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
   }
 
   _navegar(context) {
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/eleccionRol');
   }
 
   @override

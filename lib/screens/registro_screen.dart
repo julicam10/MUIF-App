@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
@@ -28,18 +29,17 @@ class RegistroPageState extends State<RegistroPage> {
   Future _registrarUsuario(context) async {
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (context) => const Center(
-    //     child: CircularProgressIndicator(),
-    //   ),
-    // );
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordTwoController.text.trim(),
-      );
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordTwoController.text.trim(),
+          )
+          .then((value) => {
+                _postDetailsToFirestore(email, 'pasajero'),
+                _crearMonedero(),
+              })
+          .catchError((e) {});
     } on FirebaseAuthException catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -50,6 +50,30 @@ class RegistroPageState extends State<RegistroPage> {
       );
     }
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  _postDetailsToFirestore(String email, String rol) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore instanciaFirebase = FirebaseFirestore.instance;
+    await instanciaFirebase.collection('users').doc(user?.uid).set({
+      'correo': _emailController.text.trim(),
+      'id': user?.uid,
+      'rol': rol,
+    });
+  }
+
+  Future<void> _crearMonedero() {
+    User? user = FirebaseAuth.instance.currentUser;
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('monedero')
+        .doc('unico')
+        .set({
+          'saldo': 0,
+        })
+        .then((value) => print("Monedero creado"))
+        .catchError((error) => print("Error al crear el monedero: $error"));
   }
 
   @override
@@ -140,7 +164,7 @@ class RegistroPageState extends State<RegistroPage> {
                                   AutovalidateMode.onUserInteraction,
                               validator: (val) {
                                 if (!val!.contains('@') || !val.contains('.')) {
-                                  return 'Invalid Email';
+                                  return 'Correo invalido';
                                 } else {
                                   return null;
                                 }
@@ -167,7 +191,7 @@ class RegistroPageState extends State<RegistroPage> {
                                 return 'Por favor ingresa tu contraseña';
                               }
                               if (passwordOne.length < 6) {
-                                return 'Tu contraseña debe tener almenos 6 caracteres';
+                                return 'Tu contraseña debe tener como mínimo 6 caracteres';
                               }
                               return null;
                             },
@@ -216,7 +240,7 @@ class RegistroPageState extends State<RegistroPage> {
                                 return 'Por favor ingresa una contraseña';
                               }
                               if (passwordTwo.length < 6) {
-                                return 'Tu contraseña debe tener almenos 6 caracteres';
+                                return 'Tu contraseña debe tener como mínimo 6 caracteres';
                               }
                               if (_passwordTwoController.text !=
                                   _passwordOneController.text) {

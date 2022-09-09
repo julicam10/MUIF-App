@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 import '../models/bar_code_text.dart';
 import '../widgets/widgets.dart';
@@ -15,6 +16,7 @@ String description = "Movilidad Urbana | Inteligente en Fusagasugá";
 String newDescription = description.replaceAll("|", "\n");
 
 class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
+  User? user = FirebaseAuth.instance.currentUser;
   String monto = '0';
 
   @override
@@ -106,8 +108,8 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                               width: 200,
                               child: StreamBuilder(
                                 stream: FirebaseFirestore.instance
-                                    .collection('usuarios')
-                                    .doc('correo@correo.com')
+                                    .collection('users')
+                                    .doc(user!.uid)
                                     .collection('monedero')
                                     .snapshots(),
                                 builder: (context,
@@ -115,7 +117,7 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                                         streamSnapshot) {
                                   if (!streamSnapshot.hasData) {
                                     return Center(
-                                        child: Text('Saldo: \$${monto}'));
+                                        child: Text('Saldo: \$$monto'));
                                   } else {
                                     return ListView.builder(
                                       itemCount:
@@ -141,7 +143,7 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
               const Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: TitleText(
-                  text: 'Historial de movimientos',
+                  text: 'Historial de pagos',
                   color: Colors.black,
                   size: 20,
                 ),
@@ -153,8 +155,8 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                   width: 300,
                   child: StreamBuilder(
                     stream: FirebaseFirestore.instance
-                        .collection('usuarios')
-                        .doc('correo@correo.com')
+                        .collection('users')
+                        .doc(user!.uid)
                         .collection('historial')
                         .snapshots(),
                     builder:

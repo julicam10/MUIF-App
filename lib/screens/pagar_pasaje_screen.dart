@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/screens/screens_screen.dart';
@@ -19,6 +22,7 @@ class PagarPasajePage extends StatefulWidget {
 class _PagarPasajePageState extends State<PagarPasajePage> {
   String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
   final String historialId = const Uuid().v1();
+  User? user = FirebaseAuth.instance.currentUser;
   bool _estaActivo = false;
   int cantidad = 0;
   int saldo = 0;
@@ -29,15 +33,16 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
     super.initState();
   }
 
-  CollectionReference instanciaUsuario =
-      FirebaseFirestore.instance.collection('usuarios');
+  CollectionReference instanciaUser =
+      FirebaseFirestore.instance.collection('users');
 
-  Future<void> getAndUpdateSaldo() {
+  CollectionReference instanciaRoute =
+      FirebaseFirestore.instance.collection('route');
+
+  Future<void> _getAndUpdateSaldo() {
     cantidad = int.parse(widget.cantidadPasajes.toString());
-    final sfDocRef = instanciaUsuario
-        .doc('correo@correo.com')
-        .collection('monedero')
-        .doc('unico');
+    final sfDocRef =
+        instanciaUser.doc(user!.uid).collection('monedero').doc('unico');
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       final snapshot = await transaction.get(sfDocRef);
       saldo = snapshot.get("saldo");
@@ -48,7 +53,7 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
       } else {
         final int nuevoSaldo = saldo - totalAPagar;
         transaction.update(sfDocRef, {"saldo": nuevoSaldo});
-        insertarRegistroHistorial();
+        _insertarRegistroHistorial();
         _navegar();
       }
     });
@@ -58,9 +63,24 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
     Navigator.pushNamed(context, '/comprobantePago', arguments: cantidad);
   }
 
-  Future<void> insertarRegistroHistorial() {
-    return instanciaUsuario
-        .doc('correo@correo.com')
+  Future<void> _insertarRegistroHistorial() {
+    return instanciaUser
+        .doc(user!.uid)
+        .collection('historial')
+        .doc(historialId)
+        .set({
+          'fecha': fecha,
+          'numeroPasajes': cantidad,
+          'total': totalAPagar,
+        })
+        .then((value) => print("Agregado al historial"))
+        .catchError((error) => print("Error al agregar al historial: $error"));
+  }
+
+  Future<void> _insertarPagoConductor() {
+    return instanciaRoute
+        //Cambiar de aqui hacia abajo
+        .doc(user!.uid)
         .collection('historial')
         .doc(historialId)
         .set({
@@ -74,145 +94,141 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          elevation: 0.0,
-          leading: BackArrowButton(
-            color: Theme.of(context).colorScheme.secondary,
+        elevation: 0.0,
+        leading: BackArrowButton(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Center(
+              child: TitleText(
+                text: 'Revisa que todo este correcto',
+                color: Colors.black,
+                size: 20.0,
+              ),
+            ),
           ),
-        ),
-        body: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Center(
-                child: TitleText(
-                  text: 'Revisa que todo este correcto',
-                  color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Center(
+              child: TitleText(
+                text: '\$ ${widget.totalAPagar} COP',
+                color: Colors.black,
+                size: 25.0,
+              ),
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+            child: Row(
+              children: [
+                const NormalText(
+                  text: 'Cantidad de pasajes: ',
+                  color: Colors.grey,
                   size: 20.0,
                 ),
+                NormalText(
+                  text: widget.cantidadPasajes.toString(),
+                  color: Colors.black,
+                  size: 20.0,
+                )
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+            child: Center(
+              child: TitleText(
+                text: 'Método de pago',
+                color: Colors.black,
+                size: 20.0,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Center(
-                child: TitleText(
-                  text: '\$ ${widget.totalAPagar} COP',
-                  color: Colors.black,
-                  size: 25.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 5.0, left: 20.0, right: 20.0, bottom: 30.0),
+            child: Row(
+              children: const [
+                NormalText(
+                    text: 'Monedero MUIF APP ', color: Colors.grey, size: 18.0),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 400,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(25.0),
+                  topRight: Radius.circular(25.0),
                 ),
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
-              child: Row(
+              child: Column(
                 children: [
-                  const NormalText(
-                    text: 'Cantidad de pasajes: ',
-                    color: Colors.grey,
-                    size: 20.0,
-                  ),
-                  NormalText(
-                    text: widget.cantidadPasajes.toString(),
-                    color: Colors.black,
-                    size: 20.0,
-                  )
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-              child: Center(
-                child: TitleText(
-                  text: 'Método de pago',
-                  color: Colors.black,
-                  size: 20.0,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 5.0, left: 20.0, right: 20.0, bottom: 30.0),
-              child: Row(
-                children: const [
-                  NormalText(
-                      text: 'Monedero MUIF APP ',
-                      color: Colors.grey,
-                      size: 18.0),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: 400,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(25.0),
-                    topRight: Radius.circular(25.0),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: CheckboxListTile(
-                        checkColor: Theme.of(context).colorScheme.primary,
-                        activeColor: Theme.of(context).colorScheme.secondary,
-                        title: const NormalText(
-                          text: 'Estoy de acuerdo en realizar el pago',
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                        value: _estaActivo,
-                        onChanged: (value) => setState(() {
-                          _estaActivo = value ?? true;
-                        }),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: CheckboxListTile(
+                      checkColor: Theme.of(context).colorScheme.primary,
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                      title: const NormalText(
+                        text: 'Estoy de acuerdo en realizar el pago',
+                        color: Colors.white,
+                        size: 20.0,
                       ),
+                      value: _estaActivo,
+                      onChanged: (value) => setState(() {
+                        _estaActivo = value ?? true;
+                      }),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 300.0),
-                      child: Hero(
-                        tag: 'boton',
-                        child: SizedBox(
-                          height: 50,
-                          width: 270,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).colorScheme.secondary,
-                            ),
-                            child: TitleText(
-                              text: 'Pagar',
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 20.0,
-                            ),
-                            onPressed: () {
-                              if (_estaActivo == true) {
-                                getAndUpdateSaldo();
-                              } else {
-                                comprobanteDialog();
-                              }
-                            },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 300.0),
+                    child: Hero(
+                      tag: 'boton',
+                      child: SizedBox(
+                        height: 50,
+                        width: 270,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).colorScheme.secondary,
                           ),
+                          child: TitleText(
+                            text: 'Pagar',
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 20.0,
+                          ),
+                          onPressed: () {
+                            if (_estaActivo == true) {
+                              _getAndUpdateSaldo();
+                            } else {
+                              _comprobanteDialog();
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Future comprobanteDialog() => showDialog(
+  Future _comprobanteDialog() => showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title:

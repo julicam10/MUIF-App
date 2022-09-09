@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/widgets/widgets.dart';
 
@@ -14,24 +15,25 @@ class TusTarjetasPage extends StatefulWidget {
 }
 
 class _TusTarjetasPageState extends State<TusTarjetasPage> {
-  int indexBorrar = 0;
+  User? user = FirebaseAuth.instance.currentUser;
   Map<String, dynamic>? data;
+  List<String> docIDS = [];
+  int indexBorrar = 0;
   String id = '';
+
+  CollectionReference instanciaUsers =
+      FirebaseFirestore.instance.collection('users');
+
   @override
   void initState() {
     super.initState();
     getDocId();
   }
 
-  CollectionReference instanciaUsuario =
-      FirebaseFirestore.instance.collection('usuarios');
-
-  List<String> docIDS = [];
-
   Future getDocId() async {
     await FirebaseFirestore.instance
-        .collection('usuarios')
-        .doc('correo@correo.com')
+        .collection('users')
+        .doc(user!.uid)
         .collection('tarjetas')
         .get()
         .then(
@@ -47,8 +49,8 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
 
   Future<void> borrarTarjeta() {
     print('Document id String: ${docIDS.toString()}');
-    return instanciaUsuario
-        .doc('correo@correo.com')
+    return instanciaUsers
+        .doc(user!.uid)
         .collection('tarjetas')
         .doc(
           docIDS[indexBorrar],
@@ -125,8 +127,8 @@ class _TusTarjetasPageState extends State<TusTarjetasPage> {
   Widget streamWidget() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection('usuarios')
-          .doc('correo@correo.com')
+          .collection('users')
+          .doc(user!.uid)
           .collection('tarjetas')
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {

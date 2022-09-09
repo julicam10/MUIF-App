@@ -24,12 +24,12 @@ class Person {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Person> people = [];
   bool ejecutarLectura = true;
   late GoogleMapController _mapController;
-  final Location _location = Location();
   late StreamSubscription<LocationData> subscription;
   late StreamSubscription<QuerySnapshot> documentSubscription;
-  List<Person> people = [];
+  final Location _location = Location();
   final String routeNumber = '001';
   final String userId = const Uuid().v1();
   final _initialCameraPosition = const CameraPosition(

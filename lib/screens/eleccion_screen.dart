@@ -1,8 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 
+import '../models/bar_code_text.dart';
 import '../models/utilities.dart';
 import '../widgets/widgets.dart';
 
@@ -17,8 +19,10 @@ class EleccionPage extends StatefulWidget {
 
 class _EleccionPageState extends State<EleccionPage> {
   int indexActualizar = 0;
-  CollectionReference instanciaUsuario =
-      FirebaseFirestore.instance.collection('usuarios');
+  String barcodeScanRes = '0';
+  CollectionReference instanciaUser =
+      FirebaseFirestore.instance.collection('users');
+  User? user = FirebaseAuth.instance.currentUser;
 
   List<String> docIDS = [];
 
@@ -30,8 +34,8 @@ class _EleccionPageState extends State<EleccionPage> {
 
   Future getDocId() async {
     await FirebaseFirestore.instance
-        .collection('usuarios')
-        .doc('correo@correo.com')
+        .collection('users')
+        .doc(user!.uid)
         .collection('tarjetas')
         .get()
         .then(
@@ -44,9 +48,9 @@ class _EleccionPageState extends State<EleccionPage> {
         );
   }
 
-  Future<void> getAndUpdate() {
-    final sfDocRef = instanciaUsuario
-        .doc('correo@correo.com')
+  Future<void> _getAndUpdate() {
+    final sfDocRef = instanciaUser
+        .doc(user!.uid)
         .collection('tarjetas')
         .doc(docIDS[indexActualizar]);
     print('valor: $valor');
@@ -54,27 +58,39 @@ class _EleccionPageState extends State<EleccionPage> {
       final snapshot = await transaction.get(sfDocRef);
       final int saldo = snapshot.get("saldo");
       print('saldo: $saldo');
-      final int nuevoSaldo = saldo - valor;
-      transaction.update(sfDocRef, {"saldo": nuevoSaldo});
+      if (saldo < valor) {
+        print('El saldo de la tarjeta no puede ser mayor al valor ingresado');
+        return;
+      } else {
+        final int nuevoSaldo = saldo - valor;
+        transaction.update(sfDocRef, {"saldo": nuevoSaldo});
+      }
     }).then(
       (value) => print("Saldo actualizado correctamente"),
       onError: (e) => print("No se pudo actualizar el saldo, error: $e"),
     );
   }
 
-  Future<void> getAndUpdateSaldo() {
-    final sfDocRef = instanciaUsuario
-        .doc('correo@correo.com')
-        .collection('monedero')
-        .doc('unico');
+  Future<void> _getAndUpdateSaldoMonedero() {
+    final sfDocRef =
+        instanciaUser.doc(user!.uid).collection('monedero').doc('unico');
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       final snapshot = await transaction.get(sfDocRef);
       final saldo = snapshot.get("saldo");
       final nuevoSaldo = saldo + valor;
       transaction.update(sfDocRef, {"saldo": nuevoSaldo});
     }).then(
-      (value) => print("Saldo del monedero actualizado correctamente"),
+      (value) =>
+          {print("Saldo del monedero actualizado correctamente"), _navegar()},
       onError: (e) => print("No se pudo actualizar el saldo $e"),
+    );
+  }
+
+  void _navegar() {
+    Navigator.pushNamed(
+      context,
+      '/monederoVirtual',
+      arguments: BarCodeText(barcodeScanRes),
     );
   }
 
@@ -119,8 +135,8 @@ class _EleccionPageState extends State<EleccionPage> {
   Widget streamWidget() {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
-          .collection('usuarios')
-          .doc('correo@correo.com')
+          .collection('users')
+          .doc(user!.uid)
           .collection('tarjetas')
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -209,9 +225,8 @@ class _EleccionPageState extends State<EleccionPage> {
                 style: TextStyle(color: Colors.black),
               ),
               onPressed: () {
-                getAndUpdateSaldo();
-                getAndUpdate();
-                Navigator.of(context).pop();
+                _getAndUpdateSaldoMonedero();
+                _getAndUpdate();
               },
             )
           ],

@@ -14,7 +14,7 @@ class _BarCodePageState extends State<BarCodePage> {
   String _scanBarcode = 'Sin  dirección de la buseta';
 
   Future<void> scanQR() async {
-    String barcodeScanRes = '2562';
+    String barcodeScanRes = '001';
     try {
       // barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
       //     '#ff6666', 'Cancel', true, ScanMode.QR);
