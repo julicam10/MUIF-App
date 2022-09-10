@@ -19,6 +19,9 @@ class PagarPasajePage extends StatefulWidget {
   State<PagarPasajePage> createState() => _PagarPasajePageState();
 }
 
+final DateTime now = DateTime.now();
+String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+
 class _PagarPasajePageState extends State<PagarPasajePage> {
   String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
   final String historialId = const Uuid().v1();
@@ -54,6 +57,7 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
         final int nuevoSaldo = saldo - totalAPagar;
         transaction.update(sfDocRef, {"saldo": nuevoSaldo});
         _insertarRegistroHistorial();
+        _insertarPagoConductor();
         _navegar();
       }
     });
@@ -69,22 +73,23 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
         .collection('historial')
         .doc(historialId)
         .set({
+          'cantidadPasajes': cantidad,
           'fecha': fecha,
-          'numeroPasajes': cantidad,
           'total': totalAPagar,
         })
-        .then((value) => print("Agregado al historial"))
-        .catchError((error) => print("Error al agregar al historial: $error"));
+        .then((value) => print("Pago cargado al conductor"))
+        .catchError(
+            (error) => print("Error al cargar el pago al coductor: $error"));
   }
 
   Future<void> _insertarPagoConductor() {
     return instanciaRoute
-        //Cambiar de aqui hacia abajo
-        .doc(user!.uid)
-        .collection('historial')
+        .doc('001')
+        .collection('pagos')
         .doc(historialId)
         .set({
           'fecha': fecha,
+          'estado': 'Aprobado',
           'numeroPasajes': cantidad,
           'total': totalAPagar,
         })

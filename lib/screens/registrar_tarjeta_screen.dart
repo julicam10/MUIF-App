@@ -72,28 +72,32 @@ class _RegistrarTarjetaPageState extends State<RegistrarTarjetaPage> {
               padding: const EdgeInsets.only(top: 330.0),
               child: Hero(
                 tag: 'boton',
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    onPrimary: Theme.of(context).colorScheme.primary,
-                    primary: Theme.of(context).colorScheme.secondary,
-                    textStyle: GoogleFonts.nunito(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: SizedBox(
+                  height: 50,
+                  width: 270,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      onPrimary: Theme.of(context).colorScheme.primary,
+                      primary: Theme.of(context).colorScheme.secondary,
+                      textStyle: GoogleFonts.nunito(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    child: const Text('Continuar'),
+                    onPressed: () {
+                      print('Tipo tarjeta es: $tipoTarjeta');
+                      if (tipoTarjeta.isNotEmpty) {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/infoTarjeta',
+                          arguments: tipoTarjeta,
+                        );
+                      } else {
+                        print('Seleccione un tipo de tarjeta');
+                      }
+                    },
                   ),
-                  child: const Text('Continuar'),
-                  onPressed: () {
-                    print('Tipo tarjeta es: $tipoTarjeta');
-                    if (tipoTarjeta.isNotEmpty) {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        '/infoTarjeta',
-                        arguments: tipoTarjeta,
-                      );
-                    } else {
-                      print('Seleccione un tipo de tarjeta');
-                    }
-                  },
                 ),
               ),
             )

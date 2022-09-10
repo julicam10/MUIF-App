@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 import 'package:muif_app/widgets/widgets.dart';
 import '../models/utilities.dart';
 
@@ -12,8 +11,6 @@ class ComprobantePagoPage extends StatefulWidget {
 }
 
 User? user = FirebaseAuth.instance.currentUser;
-final DateTime now = DateTime.now();
-String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
 int totalPagar = 0;
 
 class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
@@ -28,9 +25,16 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           elevation: 0.0,
-          leading: BackArrowButton(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.pushNamed(context, '/home'),
+              icon: Icon(
+                Icons.home,
+                color: Theme.of(context).colorScheme.secondary,
+                size: 35.0,
+              ),
+            ),
+          ],
         ),
         body: Column(
           children: [
@@ -79,8 +83,9 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                             children: [
                               _rowRuta(),
                               Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: _rowPuntosRuta())
+                                padding: const EdgeInsets.only(top: 10.0),
+                                child: _rowPuntosRuta(),
+                              )
                             ],
                           ),
                         ),
@@ -190,10 +195,36 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const TitleText(text: 'Fecha', color: Colors.black, size: 20.0),
-          NormalText(
-            text: fecha,
-            color: Colors.black,
-            size: 15.0,
+          SizedBox(
+            height: 30,
+            width: 130,
+            child: Center(
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('route')
+                    .doc('001')
+                    .collection('pagos')
+                    .snapshots(),
+                builder:
+                    (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                  if (!streamSnapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: streamSnapshot.data?.docs.length,
+                      itemBuilder: (ctx, index) => NormalText(
+                        text: streamSnapshot.data!.docs[index]['fecha']
+                            .toString(),
+                        color: Colors.black,
+                        size: 15.0,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
           )
         ],
       ),
@@ -202,7 +233,7 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
 
   Widget _correo() {
     return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
+      padding: const EdgeInsets.only(top: 5.0),
       child: Column(
         children: [
           const TitleText(text: 'Correo', color: Colors.black, size: 20.0),

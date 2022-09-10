@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // _initLocation();
+    _initLocation();
   }
 
   @override
@@ -70,6 +70,7 @@ class _HomePageState extends State<HomePage> {
         .collection('route')
         .doc(routeNumber)
         .collection('people')
+        //Documento de la ruta: 0001
         .snapshots()
         .listen((event) {
       people = event.docs
@@ -83,20 +84,21 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     });
 
-    Timer.periodic(const Duration(seconds: 20), (timer) {
-      subscription = _location.onLocationChanged.listen((LocationData event) {
-        FirebaseFirestore.instance
-            .collection('route')
-            .doc('001')
-            .collection('people')
-            .doc(userId)
-            .set({
-          'lat': event.latitude,
-          'lng': event.longitude,
-        });
-        print('${event.latitude}, ${event.longitude}');
-      });
-    });
+    // //Compartir ubicación en tiempo real
+    // Timer.periodic(const Duration(seconds: 20), (timer) {
+    //   subscription = _location.onLocationChanged.listen((LocationData event) {
+    //     FirebaseFirestore.instance
+    //         .collection('route')
+    //         .doc('001')
+    //         .collection('people')
+    //         .doc(userId)
+    //         .set({
+    //       'lat': event.latitude,
+    //       'lng': event.longitude,
+    //     });
+    //     print('${event.latitude}, ${event.longitude}');
+    //   });
+    // });
   }
 
   _removeLocation() {

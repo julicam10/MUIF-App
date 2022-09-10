@@ -153,70 +153,7 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                 child: SizedBox(
                   height: 350,
                   width: 300,
-                  child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(user!.uid)
-                        .collection('historial')
-                        .snapshots(),
-                    builder:
-                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                      if (!streamSnapshot.hasData) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        return ListView.builder(
-                          itemCount: streamSnapshot.data?.docs.length,
-                          itemBuilder: (ctx, index) => Container(
-                            height: 75.0,
-                            width: 50.0,
-                            margin: const EdgeInsets.only(top: 10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color.fromRGBO(82, 150, 250, 0.2),
-                                  Color.fromRGBO(0, 98, 189, 1),
-                                ],
-                                stops: [0.1, 0.9],
-                                begin: FractionalOffset.topLeft,
-                                end: FractionalOffset.bottomRight,
-                              ),
-                            ),
-                            child: ListTile(
-                              title: NormalText(
-                                text:
-                                    'Fecha: ${streamSnapshot.data?.docs[index]['fecha']}',
-                                color: Colors.black,
-                                size: 15.0,
-                              ),
-                              subtitle: TitleText(
-                                text:
-                                    'Cantidad de pasajes: ${streamSnapshot.data!.docs[index]['numeroPasajes'].toString()}',
-                                color: Colors.black,
-                                size: 15.0,
-                              ),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const TitleText(
-                                    text: 'Total pago:',
-                                    color: Colors.white,
-                                    size: 15.0,
-                                  ),
-                                  TitleText(
-                                    text:
-                                        '\$${streamSnapshot.data!.docs[index]['total'].toString()}',
-                                    color: Colors.white,
-                                    size: 15.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                  child: streamWidget(),
                 ),
               ),
               Padding(
@@ -285,6 +222,71 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget streamWidget() {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .collection('historial')
+          .snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+        if (!streamSnapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return ListView.builder(
+            itemCount: streamSnapshot.data?.docs.length,
+            itemBuilder: (ctx, index) => Container(
+              height: 75.0,
+              width: 50.0,
+              margin: const EdgeInsets.only(top: 10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                gradient: const LinearGradient(
+                  colors: [
+                    Color.fromRGBO(82, 150, 250, 0.2),
+                    Color.fromRGBO(0, 98, 189, 1),
+                  ],
+                  stops: [0.1, 0.9],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight,
+                ),
+              ),
+              child: ListTile(
+                title: TitleText(
+                  text: 'Fecha: ${streamSnapshot.data?.docs[index]['fecha']}',
+                  color: Colors.black,
+                  size: 16.0,
+                ),
+                subtitle: TitleText(
+                  text:
+                      'Cantidad de pasajes: ${streamSnapshot.data?.docs[index]['cantidadPasajes'].toString()}',
+                  color: Colors.black,
+                  size: 15.0,
+                ),
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const TitleText(
+                      text: 'Total:',
+                      color: Colors.white,
+                      size: 15.0,
+                    ),
+                    TitleText(
+                      text:
+                          '\$ ${streamSnapshot.data!.docs[index]['total'].toString()}',
+                      color: Colors.white,
+                      size: 15.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
