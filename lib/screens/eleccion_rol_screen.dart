@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:muif_app/screens/admin_screen.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 
 import '../models/user.dart';
@@ -15,19 +16,19 @@ class EleccioRolPage extends StatefulWidget {
 class _EleccioRolPageState extends State<EleccioRolPage> {
   @override
   Widget build(BuildContext context) {
-    return const Control();
+    return contro();
   }
 }
 
-class Control extends StatefulWidget {
-  const Control({Key? key}) : super(key: key);
+class contro extends StatefulWidget {
+  contro();
 
   @override
-  _ControlState createState() => _ControlState();
+  _controState createState() => _controState();
 }
 
-class _ControlState extends State<Control> {
-  _ControlState();
+class _controState extends State<contro> {
+  _controState();
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   String rol = '';
@@ -41,7 +42,7 @@ class _ControlState extends State<Control> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
+      this.loggedInUser = UserModel.fromMap(value.data());
     }).whenComplete(() {
       const CircularProgressIndicator();
       setState(() {

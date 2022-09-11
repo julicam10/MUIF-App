@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/models/utilities.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 import '../models/bar_code_text.dart';
-import '../widgets/widgets.dart';
 
 class MonederoVirtualPage extends StatefulWidget {
   const MonederoVirtualPage({Key? key}) : super(key: key);

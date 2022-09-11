@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:muif_app/widgets/drawer_conductor.dart';
-
-import '../widgets/widgets.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 class HomeConductorPage extends StatefulWidget {
   const HomeConductorPage({Key? key}) : super(key: key);

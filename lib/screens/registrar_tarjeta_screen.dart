@@ -1,7 +1,9 @@
 // ignore_for_file: avoid_print
 
-import 'package:muif_app/models/utilities.dart';
-import 'package:muif_app/widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 class RegistrarTarjetaPage extends StatefulWidget {
   const RegistrarTarjetaPage({Key? key}) : super(key: key);

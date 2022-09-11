@@ -2,9 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/models/utilities.dart';
-import 'package:muif_app/widgets/widgets.dart';
-
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/normal_text_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 import '../main.dart';
 
 class RegistroPage extends StatefulWidget {
@@ -22,9 +24,17 @@ class RegistroPageState extends State<RegistroPage> {
   bool selectedValue = true;
   bool selectedValueTwo = true;
   final formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordOneController = TextEditingController();
-  final _passwordTwoController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordOneController = TextEditingController();
+  final TextEditingController _passwordTwoController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordOneController.dispose();
+    _passwordTwoController.dispose();
+    super.dispose();
+  }
 
   Future _registrarUsuario(context) async {
     final isValid = formKey.currentState!.validate();

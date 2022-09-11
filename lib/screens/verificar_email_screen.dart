@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/models/utilities.dart';
 import 'package:muif_app/screens/screens_screen.dart';
-
-import '../widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 class VerificarEmailPage extends StatefulWidget {
   const VerificarEmailPage({Key? key}) : super(key: key);

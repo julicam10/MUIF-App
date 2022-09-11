@@ -1,7 +1,10 @@
 // ignore_for_file: avoid_print
 
-import '../models/utilities.dart';
-import '../widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
+
 import 'screens_screen.dart';
 
 class MontoRecargarPage extends StatefulWidget {

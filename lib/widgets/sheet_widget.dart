@@ -1,5 +1,6 @@
-import 'package:muif_app/models/utilities.dart';
-import 'package:muif_app/widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:muif_app/widgets/normal_text_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 class SheetWidget extends StatelessWidget {
   const SheetWidget({

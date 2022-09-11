@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/widgets/widgets.dart';
-
-import '../models/utilities.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/normal_text_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 class RecuperarContrasenaPage extends StatefulWidget {
   const RecuperarContrasenaPage({Key? key}) : super(key: key);
@@ -16,18 +18,18 @@ class RecuperarContrasenaPage extends StatefulWidget {
 
 class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
   String email = '';
-  final emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   void dispose() {
-    emailController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   Future _restablecerContrasena() async {
     try {
       await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: emailController.text.trim());
+          .sendPasswordResetEmail(email: _emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Correo enviado'),
@@ -112,7 +114,7 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                       padding:
                           const EdgeInsets.only(left: 15, right: 30, top: 25),
                       child: TextFormField(
-                        controller: emailController,
+                        controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: Colors.white,
                         style: const TextStyle(

@@ -17,20 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      // builder: (context, child) => ResponsiveWrapper.builder(
-      //   child,
-      //   maxWidth: 1200,
-      //   minWidth: 480,
-      //   defaultScale: true,
-      //   breakpoints: [
-      //     const ResponsiveBreakpoint.resize(480, name: MOBILE),
-      //     const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-      //     const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-      //   ],
-      // ),
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-
       initialRoute: '/',
       routes: {
         '/': (context) => const Inicio(),

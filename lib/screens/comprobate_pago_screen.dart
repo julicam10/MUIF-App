@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/widgets/widgets.dart';
-import '../models/utilities.dart';
+import 'package:flutter/material.dart';
+import 'package:muif_app/widgets/normal_text_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 class ComprobantePagoPage extends StatefulWidget {
   const ComprobantePagoPage({Key? key}) : super(key: key);

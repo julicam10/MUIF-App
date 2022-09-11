@@ -2,11 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:muif_app/screens/screens_screen.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 
 import '../models/bar_code_text.dart';
-import '../models/utilities.dart';
-import '../widgets/widgets.dart';
 
 class EleccionPage extends StatefulWidget {
   const EleccionPage({Key? key, required this.valor}) : super(key: key);

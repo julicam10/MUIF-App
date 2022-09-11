@@ -6,7 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:muif_app/widgets/widgets.dart';
+import 'package:muif_app/widgets/drawer_widget.dart';
+import 'package:muif_app/widgets/sheet_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {

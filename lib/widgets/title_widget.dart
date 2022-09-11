@@ -1,4 +1,5 @@
-import 'package:muif_app/models/utilities.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TitleText extends StatelessWidget {
   const TitleText({

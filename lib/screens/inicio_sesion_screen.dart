@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/models/utilities.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class InicioSesionPage extends StatefulWidget {
   const InicioSesionPage({Key? key}) : super(key: key);
@@ -14,8 +16,8 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
   String email = '';
   String password = '';
   bool selectedValue = true;
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final scaffolKey = GlobalKey<ScaffoldState>();
 
   @override

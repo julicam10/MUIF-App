@@ -2,9 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:muif_app/models/utilities.dart';
-import 'package:muif_app/widgets/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/widgets/arrow_back_widget.dart';
+import 'package:muif_app/widgets/title_widget.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class InfoTarjetaPage extends StatefulWidget {
   const InfoTarjetaPage({Key? key}) : super(key: key);
