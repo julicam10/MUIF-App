@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:muif_app/screens/admin_screen.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 
 import '../models/user.dart';
@@ -42,6 +41,7 @@ class _controState extends State<contro> {
         .doc(user!.uid)
         .get()
         .then((value) {
+      // ignore: unnecessary_this
       this.loggedInUser = UserModel.fromMap(value.data());
     }).whenComplete(() {
       const CircularProgressIndicator();

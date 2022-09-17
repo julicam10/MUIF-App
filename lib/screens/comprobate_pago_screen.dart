@@ -20,117 +20,112 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
     final info = ModalRoute.of(context)!.settings.arguments;
     int infoInt = int.parse(info.toString());
     totalPagar = infoInt * 1850;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          elevation: 0.0,
-          actions: [
-            IconButton(
-              onPressed: () => Navigator.pushNamed(context, '/home'),
-              icon: Icon(
-                Icons.home,
-                color: Theme.of(context).colorScheme.secondary,
-                size: 35.0,
-              ),
-            ),
-          ],
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: () => Navigator.pushNamed(context, '/home'),
+          icon: Icon(
+            Icons.home,
+            color: Theme.of(context).colorScheme.primary,
+            size: 35.0,
+          ),
         ),
-        body: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Center(
-                child: TitleText(
-                  text: 'Comprobante de pago',
-                  color: Colors.black,
-                  size: 20.0,
-                ),
+      ),
+      body: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            child: Center(
+              child: TitleText(
+                text: 'Comprobante de pago',
+                color: Colors.black,
+                size: 20.0,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: Center(
-                child: Container(
-                  height: 490,
-                  width: 330,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF9F9F9),
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Center(
+              child: Container(
+                height: 490,
+                width: 330,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9F9F9),
+                  borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      _rowBanner(),
+                      const Divider(
+                        color: Colors.black,
+                        height: 1.0,
+                        thickness: 1.0,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Column(
+                          children: [
+                            _rowRuta(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: _rowPuntosRuta(),
+                            )
+                          ],
+                        ),
+                      ),
+                      _fecha(),
+                      _correo(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Column(
+                          children: [
+                            const TitleText(
+                                text: 'Cantidad de pasajes',
+                                color: Colors.black,
+                                size: 20.0),
+                            NormalText(
+                                text: info.toString(),
+                                color: Colors.black,
+                                size: 15.0)
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Column(
+                          children: [
+                            const TitleText(
+                                text: 'Total a pagar',
+                                color: Colors.black,
+                                size: 20.0),
+                            NormalText(
+                                text: '\$ ${totalPagar.toString()}',
+                                color: Colors.black,
+                                size: 15.0)
+                          ],
+                        ),
+                      ),
+                      _saldo(),
                     ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        _rowBanner(),
-                        const Divider(
-                          color: Colors.black,
-                          height: 1.0,
-                          thickness: 1.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Column(
-                            children: [
-                              _rowRuta(),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: _rowPuntosRuta(),
-                              )
-                            ],
-                          ),
-                        ),
-                        _fecha(),
-                        _correo(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Column(
-                            children: [
-                              const TitleText(
-                                  text: 'Cantidad de pasajes',
-                                  color: Colors.black,
-                                  size: 20.0),
-                              NormalText(
-                                  text: info.toString(),
-                                  color: Colors.black,
-                                  size: 15.0)
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Column(
-                            children: [
-                              const TitleText(
-                                  text: 'Total a pagar',
-                                  color: Colors.black,
-                                  size: 20.0),
-                              NormalText(
-                                  text: '\$ ${totalPagar.toString()}',
-                                  color: Colors.black,
-                                  size: 15.0)
-                            ],
-                          ),
-                        ),
-                        _saldo(),
-                      ],
-                    ),
-                  ),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -205,6 +200,8 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                     .collection('route')
                     .doc('001')
                     .collection('pagos')
+                    .orderBy('fecha', descending: false)
+                    .limitToLast(1)
                     .snapshots(),
                 builder:
                     (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {

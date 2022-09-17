@@ -14,106 +14,112 @@ class MontoRecargarPage extends StatefulWidget {
   State<MontoRecargarPage> createState() => _MontoRecargarPageState();
 }
 
-final montoController = TextEditingController();
-final _formKey = GlobalKey<FormState>();
-
 int valor = 0;
 
 class _MontoRecargarPageState extends State<MontoRecargarPage> {
+  final _montoController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
     super.dispose();
-    montoController.clear();
+    _montoController.clear();
   }
 
   // var montoMask = MaskTextInputFormatter(
   //     mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          elevation: 0.0,
-          leading:
-              BackArrowButton(color: Theme.of(context).colorScheme.secondary),
-        ),
-        body: Center(
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              children: [
-                Column(
-                  children: [
-                    const Center(
-                      child: TitleText(
-                        text: 'Monto a recargar',
-                        color: Colors.black,
-                        size: 20,
-                      ),
+        elevation: 0.0,
+        leading:
+            BackArrowButton(color: Theme.of(context).colorScheme.secondary),
+      ),
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              Column(
+                children: [
+                  const Center(
+                    child: TitleText(
+                      text: 'Monto a recargar',
+                      color: Colors.black,
+                      size: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: _inputMonto(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 550.0),
-                      child: Hero(
-                        tag: 'boton',
-                        child: SizedBox(
-                          height: 50,
-                          width: 270,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              onPrimary: Theme.of(context).colorScheme.primary,
-                              primary: Theme.of(context).colorScheme.secondary,
-                              textStyle: GoogleFonts.nunito(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: _inputMonto(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 550.0),
+                    child: Hero(
+                      tag: 'boton',
+                      child: SizedBox(
+                        height: 50,
+                        width: 270,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            onPrimary: Theme.of(context).colorScheme.primary,
+                            primary: Theme.of(context).colorScheme.secondary,
+                            textStyle: GoogleFonts.nunito(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                            child: const Text('Continuar'),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EleccionPage(
-                                            valor: valor,
-                                          )),
-                                );
-                              } else {
-                                print('Hubo un error');
-                              }
-                            },
                           ),
+                          child: const Text('Continuar'),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EleccionPage(
+                                          valor: valor,
+                                        )),
+                              );
+                            } else {
+                              print('Hubo un error');
+                            }
+                          },
                         ),
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
     );
   }
 
-  Container _inputMonto() {
-    return Container(
-      height: 50,
-      width: 300,
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      margin: const EdgeInsets.symmetric(horizontal: 15.0),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(50.0)),
+  Widget _inputMonto() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 50,
+        right: 50,
+      ),
       child: TextFormField(
-        controller: montoController,
+        controller: _montoController,
         keyboardType: TextInputType.number,
-        style: const TextStyle(fontSize: 20.0),
+        style: const TextStyle(fontSize: 18.0),
+        cursorColor: Colors.black,
+        decoration: InputDecoration(
+          hintText: 'Ingrese el valor a recargar',
+          labelText: 'Valor a recargar',
+          suffixIconColor: Colors.black,
+          hintStyle: TextStyle(
+            color: Colors.grey.shade500,
+          ),
+          labelStyle: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
         validator: (montoInput) {
           if (montoInput!.isEmpty) {
             return 'Por favor ingresa un valor';
@@ -127,10 +133,6 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
             valor = int.parse(valorString);
           });
         },
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Ingrese el valor a transferir',
-        ),
       ),
     );
   }

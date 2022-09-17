@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison, no_leading_underscores_for_local_identifiers, avoid_print
-
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,8 +27,8 @@ class _HomePageState extends State<HomePage> {
   List<Person> people = [];
   bool ejecutarLectura = true;
   late GoogleMapController _mapController;
-  late StreamSubscription<LocationData> subscription;
   late StreamSubscription<QuerySnapshot> documentSubscription;
+  // late StreamSubscription<LocationData> subscription;
   final Location _location = Location();
   final String routeNumber = '001';
   final String userId = const Uuid().v1();
@@ -68,6 +66,13 @@ class _HomePageState extends State<HomePage> {
       }
     }
     // Sincronizar multiusuarios en el map
+    _location.onLocationChanged.listen((LocationData event) {
+      print("${event.latitude}, ${event.longitude}");
+      if (_mapController != null) {
+        // _mapController.animateCamera(
+        //     CameraUpdate.newLatLng(LatLng(event.latitude, event.longitude),),);
+      }
+    });
     documentSubscription = FirebaseFirestore.instance
         .collection('route')
         .doc(routeNumber)
@@ -107,9 +112,9 @@ class _HomePageState extends State<HomePage> {
     if (documentSubscription != null) {
       documentSubscription.cancel();
     }
-    if (subscription != null) {
-      subscription.cancel();
-    }
+    // if (subscription != null) {
+    //   subscription.cancel();
+    // }
     FirebaseFirestore.instance
         .collection('route')
         .doc('001')

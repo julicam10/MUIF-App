@@ -37,42 +37,40 @@ class _BarCodePageState extends State<BarCodePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          elevation: 0.0,
-          leading: BackArrowButton(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+        elevation: 0.0,
+        leading: BackArrowButton(
+          color: Theme.of(context).colorScheme.secondary,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => scanQR(),
-          child: const Icon(Icons.filter_center_focus),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () => Navigator.pushNamed(context, '/monederoVirtual'),
-              icon: const Icon(
-                Icons.arrow_circle_right_outlined,
-                color: Colors.black,
-              ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => scanQR(),
+        child: const Icon(Icons.filter_center_focus),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/monederoVirtual'),
+            icon: const Icon(
+              Icons.arrow_circle_right_outlined,
+              color: Colors.black,
             ),
-            const TitleText(
-                text: 'Número de la buseta', color: Colors.black, size: 20.0),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Center(
-                child: TitleText(
-                    text: _scanBarcode, color: Colors.black, size: 20.0),
-              ),
-            )
-          ],
-        ),
+          ),
+          const TitleText(
+              text: 'Número de la buseta', color: Colors.black, size: 20.0),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0),
+            child: Center(
+              child: TitleText(
+                  text: _scanBarcode, color: Colors.black, size: 20.0),
+            ),
+          )
+        ],
       ),
     );
   }

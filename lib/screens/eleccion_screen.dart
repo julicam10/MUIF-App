@@ -49,7 +49,7 @@ class _EleccionPageState extends State<EleccionPage> {
         );
   }
 
-  Future<void> _getAndUpdate() {
+  Future<void> _getAndUpdateSaldoTarjeta() {
     final sfDocRef = instanciaUser
         .doc(user!.uid)
         .collection('tarjetas')
@@ -59,15 +59,25 @@ class _EleccionPageState extends State<EleccionPage> {
       final snapshot = await transaction.get(sfDocRef);
       final int saldo = snapshot.get("saldo");
       print('saldo: $saldo');
-      if (saldo < valor) {
+      if (valor > saldo) {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'El valor ingresado es mayor al que tienes disponible en tu tarjeta'),
+            backgroundColor: Colors.red,
+          ),
+        );
         print('El saldo de la tarjeta no puede ser mayor al valor ingresado');
         return;
-      } else {
+      }
+      if (valor < saldo) {
         final int nuevoSaldo = saldo - valor;
         transaction.update(sfDocRef, {"saldo": nuevoSaldo});
+        _getAndUpdateSaldoMonedero();
       }
     }).then(
-      (value) => print("Saldo actualizado correctamente"),
+      (value) => print("Saldo de tarjeta actualizado correctamente"),
       onError: (e) => print("No se pudo actualizar el saldo, error: $e"),
     );
   }
@@ -82,7 +92,7 @@ class _EleccionPageState extends State<EleccionPage> {
       transaction.update(sfDocRef, {"saldo": nuevoSaldo});
     }).then(
       (value) =>
-          {print("Saldo del monedero actualizado correctamente"), _navegar()},
+          {print("Saldo de monedero actualizado correctamente"), _navegar()},
       onError: (e) => print("No se pudo actualizar el saldo $e"),
     );
   }
@@ -226,8 +236,8 @@ class _EleccionPageState extends State<EleccionPage> {
                 style: TextStyle(color: Colors.black),
               ),
               onPressed: () {
-                _getAndUpdateSaldoMonedero();
-                _getAndUpdate();
+                // _getAndUpdateSaldoMonedero();
+                _getAndUpdateSaldoTarjeta();
               },
             )
           ],

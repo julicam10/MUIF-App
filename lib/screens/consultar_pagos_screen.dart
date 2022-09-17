@@ -35,6 +35,7 @@ class _ConsultarPagosPageState extends State<ConsultarPagosPage> {
           .collection('route')
           .doc('001')
           .collection('pagos')
+          .orderBy('fecha', descending: true)
           .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if (!streamSnapshot.hasData) {

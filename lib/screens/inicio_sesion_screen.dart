@@ -16,31 +16,38 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
   String email = '';
   String password = '';
   bool selectedValue = true;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final scaffolKey = GlobalKey<ScaffoldState>();
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _emailController.clear();
-    _passwordController.clear();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
   Future _iniciarSesion(context) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+    final isValid = formKey.currentState!.validate();
+    if (!isValid) return;
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
       );
       _navegar(context);
     } on FirebaseAuthException catch (e) {
@@ -110,89 +117,88 @@ class _InicioSesionPageState extends State<InicioSesionPage> {
                         : size.height * 0.005,
                   ),
                   child: SizedBox(
-                    //Key?
-                    // child: Form(
-                    //   key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 30, top: 25),
-                          child: TextFormField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                              icon: const Icon(
-                                Icons.alternate_email_outlined,
-                              ),
-                              hintText: 'correo@ejemplo.com',
-                              labelText: 'Correo electrónico',
-                              suffixIconColor: Colors.white,
-                              hintStyle: TextStyle(
-                                color: Colors.grey.shade600,
-                              ),
-                              labelStyle: TextStyle(
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            onSaved: (val) => email = val!,
-                            validator: (val) {
-                              if (!val!.contains('@') || !val.contains('.')) {
-                                return 'Invalid Email';
-                              } else {
-                                return null;
-                              }
-                            },
-                            // onChanged: (value) => print(value), Verificación de entrada de texto
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: 15,
-                            right: 30,
-                            top: size.height < 800
-                                ? size.height * 0.02
-                                : size.height * 0.03,
-                          ),
-                          child: TextFormField(
-                            obscureText: selectedValue,
-                            controller: _passwordController,
-                            validator: (passwordOne) {
-                              if (passwordOne!.isEmpty) {
-                                return 'Por favor ingresa tu contraseña';
-                              }
-                              return null;
-                            },
-                            onSaved: (passwordOne) {
-                              passwordOne = passwordOne!;
-                              print(passwordOne);
-                            },
-                            decoration: InputDecoration(
-                              icon: const Icon(Icons.lock),
-                              hintText: 'Contraseña',
-                              labelText: 'Contraseña',
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  selectedValue
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  semanticLabel: selectedValue
-                                      ? 'Contraseña oculta'
-                                      : 'Contraseña visible',
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 30, top: 25),
+                            child: TextFormField(
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                icon: const Icon(
+                                  Icons.alternate_email_outlined,
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    selectedValue ^= true;
-                                  });
-                                },
+                                hintText: 'correo@ejemplo.com',
+                                labelText: 'Correo electrónico',
+                                suffixIconColor: Colors.white,
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade600,
+                                ),
+                                labelStyle: TextStyle(
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                              onSaved: (val) => email = val!,
+                              validator: (val) {
+                                if (!val!.contains('@') || !val.contains('.')) {
+                                  return 'Por favor ingresa un correo valido';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              // onChanged: (value) => print(value), Verificación de entrada de texto
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: 15,
+                              right: 30,
+                              top: size.height < 800
+                                  ? size.height * 0.02
+                                  : size.height * 0.03,
+                            ),
+                            child: TextFormField(
+                              obscureText: selectedValue,
+                              controller: passwordController,
+                              validator: (passwordOne) {
+                                if (passwordOne!.isEmpty) {
+                                  return 'Por favor ingresa tu contraseña';
+                                }
+                                return null;
+                              },
+                              onSaved: (passwordOne) {
+                                passwordOne = passwordOne!;
+                                print(passwordOne);
+                              },
+                              decoration: InputDecoration(
+                                icon: const Icon(Icons.lock),
+                                hintText: 'Contraseña',
+                                labelText: 'Contraseña',
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    selectedValue
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    semanticLabel: selectedValue
+                                        ? 'Contraseña oculta'
+                                        : 'Contraseña visible',
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedValue ^= true;
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    // ),
                   ),
                 ),
                 Padding(

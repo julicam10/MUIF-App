@@ -33,91 +33,89 @@ class SeleccionarInformacionPageState
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          elevation: 0.0,
-          leading: BackArrowButton(
-            color: Theme.of(context).colorScheme.secondary,
+        elevation: 0.0,
+        leading: BackArrowButton(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Align(
+              alignment: Alignment.center,
+              child: TitleText(
+                text: 'Número de pasajes',
+                color: Colors.black,
+                size: 20.0,
+              ),
+            ),
           ),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: TitleText(
-                  text: 'Número de pasajes',
-                  color: Colors.black,
-                  size: 20.0,
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 110.0, vertical: 10.0),
-              child: SizedBox(
-                height: 60.0,
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 110.0, vertical: 10.0),
+            child: SizedBox(
+              height: 60.0,
+              child: DropdownButtonFormField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  value: selectedValuePasajes,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedValuePasajes = newValue!;
-                      print('valor seleccionado: $selectedValuePasajes');
-                    });
-                  },
-                  items: dropdownItems,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
                 ),
+                value: selectedValuePasajes,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedValuePasajes = newValue!;
+                    print('valor seleccionado: $selectedValuePasajes');
+                  });
+                },
+                items: dropdownItems,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 500),
-              child: Center(
-                child: Hero(
-                  tag: 'boton',
-                  child: SizedBox(
-                    height: 50,
-                    width: 270,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.secondary,
-                      ),
-                      child: TitleText(
-                        text: 'Continuar',
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 20.0,
-                      ),
-                      onPressed: () {
-                        int cantidadPasajes = int.parse(selectedValuePasajes);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PagarPasajePage(
-                              cantidadPasajes: cantidadPasajes,
-                              totalAPagar: cantidadPasajes * 1850,
-                            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 500),
+            child: Center(
+              child: Hero(
+                tag: 'boton',
+                child: SizedBox(
+                  height: 50,
+                  width: 270,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.secondary,
+                    ),
+                    child: TitleText(
+                      text: 'Continuar',
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 20.0,
+                    ),
+                    onPressed: () {
+                      int cantidadPasajes = int.parse(selectedValuePasajes);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PagarPasajePage(
+                            cantidadPasajes: cantidadPasajes,
+                            totalAPagar: cantidadPasajes * 1850,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

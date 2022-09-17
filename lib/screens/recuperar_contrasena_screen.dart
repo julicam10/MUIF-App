@@ -19,6 +19,7 @@ class RecuperarContrasenaPage extends StatefulWidget {
 class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
   String email = '';
   final TextEditingController _emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -113,32 +114,35 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                     child: Padding(
                       padding:
                           const EdgeInsets.only(left: 15, right: 30, top: 25),
-                      child: TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        cursorColor: Colors.white,
-                        style: const TextStyle(
-                          color: Colors.white,
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          cursorColor: Colors.white,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.alternate_email_outlined,
+                                color: Colors.white),
+                            hintText: 'correo@ejemplo.com',
+                            labelText: 'Correo electrónico',
+                            suffixIconColor: Colors.white,
+                            hintStyle: TextStyle(color: Colors.white),
+                            labelStyle: TextStyle(color: Colors.white),
+                          ),
+                          onSaved: (val) => email = val!,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (val) {
+                            if (!val!.contains('@') || !val.contains('.')) {
+                              return 'Por favor ingresa un correo valido';
+                            } else {
+                              return null;
+                            }
+                          },
+                          // onChanged: (value) => print(value), Verificación de entrada de texto
                         ),
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.alternate_email_outlined,
-                              color: Colors.white),
-                          hintText: 'correo@ejemplo.com',
-                          labelText: 'Correo electrónico',
-                          suffixIconColor: Colors.white,
-                          hintStyle: TextStyle(color: Colors.white),
-                          labelStyle: TextStyle(color: Colors.white),
-                        ),
-                        onSaved: (val) => email = val!,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (val) {
-                          if (!val!.contains('@') || !val.contains('.')) {
-                            return 'Invalid Email';
-                          } else {
-                            return null;
-                          }
-                        },
-                        // onChanged: (value) => print(value), Verificación de entrada de texto
                       ),
                     ),
                   ),
