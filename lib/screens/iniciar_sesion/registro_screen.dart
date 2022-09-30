@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/normal_text_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
-import '../main.dart';
+import '../../main.dart';
 
 class RegistroPage extends StatefulWidget {
   const RegistroPage({Key? key}) : super(key: key);

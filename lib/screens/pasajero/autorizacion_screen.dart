@@ -3,7 +3,7 @@ import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/normal_text_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
-import '../widgets/boton_widget.dart';
+import '../../widgets/boton_widget.dart';
 
 class AutorizacionPage extends StatefulWidget {
   const AutorizacionPage({Key? key}) : super(key: key);

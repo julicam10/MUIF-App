@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
-import '../models/bar_code_text.dart';
-import '../widgets/arrow_back_widget.dart';
+import '../../models/bar_code_text.dart';
+import '../../widgets/arrow_back_widget.dart';
 
 class BarCodePage extends StatefulWidget {
   const BarCodePage({Key? key}) : super(key: key);

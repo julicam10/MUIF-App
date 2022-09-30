@@ -2,12 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:muif_app/screens/iniciar_sesion/eleccion_screen.dart';
 import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
-import 'package:pattern_formatter/pattern_formatter.dart';
-
-import 'screens_screen.dart';
 
 class MontoRecargarPage extends StatefulWidget {
   const MontoRecargarPage({Key? key}) : super(key: key);

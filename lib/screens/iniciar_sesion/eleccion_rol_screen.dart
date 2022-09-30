@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 
-import '../models/user.dart';
+import '../../models/user.dart';
 
 class EleccioRolPage extends StatefulWidget {
   const EleccioRolPage({Key? key}) : super(key: key);
