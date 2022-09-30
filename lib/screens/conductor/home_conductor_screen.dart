@@ -17,11 +17,9 @@ class HomeConductorPage extends StatefulWidget {
 }
 
 class _HomeConductorPageState extends State<HomeConductorPage> {
-  bool _switchCurrentValue = false;
   late GoogleMapController _mapController;
   final Location _location = Location();
   late StreamSubscription<LocationData> subscription;
-  late StreamSubscription<QuerySnapshot> documentSubscription;
   final _initialCameraPosition = const CameraPosition(
     target: LatLng(4.342518, -74.361593),
     zoom: 16,
@@ -30,6 +28,13 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
   @override
   void initState() {
     super.initState();
+    _initLocation();
+  }
+
+  @override
+  void dispose() {
+    _initLocation();
+    super.dispose();
   }
 
   _initLocation() async {
@@ -56,6 +61,8 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
             .doc('001')
             .collection('people')
             .doc('0001')
+            .collection('ubicacion')
+            .doc('ubicacion')
             .set({
           'lat': event.latitude,
           'lng': event.longitude,
@@ -66,17 +73,14 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
   }
 
   _removeLocation() {
-    if (documentSubscription != null) {
-      documentSubscription.cancel();
-    }
-    if (subscription != null) {
-      subscription.cancel();
-    }
+    subscription.cancel();
     FirebaseFirestore.instance
         .collection('route')
         .doc('001')
         .collection('people')
         .doc('0001')
+        .collection('ubicacion')
+        .doc('ubicacion')
         .delete();
     setState(() {});
   }
@@ -93,26 +97,13 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
         centerTitle: true,
         elevation: 0.0,
         actions: [
-          Switch(
-            value: _switchCurrentValue,
-            onChanged: (bool valueIn) {
-              setState(() {
-                _switchCurrentValue = valueIn;
-                if (_switchCurrentValue == true) {
-                  _initLocation();
-                } else {
-                  _removeLocation();
-                }
-              });
-            },
+          IconButton(
+            onPressed: () => openDialog(),
+            icon: const Icon(
+              Icons.location_disabled_outlined,
+              color: Colors.white,
+            ),
           ),
-          // IconButton(
-          //   onPressed: ,
-          //   icon: const Icon(
-          //     Icons.route,
-          //     color: Colors.white,
-          //   ),
-          // ),
         ],
       ),
       drawer: const SideMenuConductor(),
@@ -131,4 +122,37 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
       ),
     );
   }
+
+  Future openDialog() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('¿Desea terminar la ruta?'),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary),
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+              ),
+              child: const Text(
+                'Aceptar',
+                style: TextStyle(color: Colors.black),
+              ),
+              onPressed: () {
+                _removeLocation();
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
+      );
 }

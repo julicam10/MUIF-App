@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
 
 import 'screens_screen.dart';
 
@@ -17,16 +19,24 @@ class MontoRecargarPage extends StatefulWidget {
 int valor = 0;
 
 class _MontoRecargarPageState extends State<MontoRecargarPage> {
-  final _montoController = TextEditingController();
+  late TextEditingController montoController;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    montoController = TextEditingController();
+    super.initState();
+  }
+
   @override
   void dispose() {
     super.dispose();
-    _montoController.clear();
+    montoController.clear();
   }
 
   // var montoMask = MaskTextInputFormatter(
   //     mask: "00.000.000", filter: {"0": RegExp(r'[0-9]')});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +115,7 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
         right: 50,
       ),
       child: TextFormField(
-        controller: _montoController,
+        controller: montoController,
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 18.0),
         cursorColor: Colors.black,
@@ -127,11 +137,9 @@ class _MontoRecargarPageState extends State<MontoRecargarPage> {
           return null;
         },
         onChanged: (codeInput) {
-          setState(() {
-            String valorString;
-            valorString = codeInput;
-            valor = int.parse(valorString);
-          });
+          String valorString;
+          valorString = codeInput;
+          valor = int.parse(valorString);
         },
       ),
     );

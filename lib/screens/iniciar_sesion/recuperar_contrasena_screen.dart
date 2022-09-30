@@ -18,19 +18,25 @@ class RecuperarContrasenaPage extends StatefulWidget {
 
 class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
   String email = '';
-  final TextEditingController _emailController = TextEditingController();
+  late TextEditingController emailController;
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    emailController = TextEditingController();
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    _emailController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
   Future _restablecerContrasena() async {
     try {
       await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: _emailController.text.trim());
+          .sendPasswordResetEmail(email: emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Correo enviado'),
@@ -117,7 +123,7 @@ class _RecuperarContrasenaPageState extends State<RecuperarContrasenaPage> {
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           cursorColor: Colors.white,
                           style: const TextStyle(

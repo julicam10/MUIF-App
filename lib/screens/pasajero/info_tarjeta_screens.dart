@@ -46,30 +46,34 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
   int saldo = 0;
   final String tarjetaId = const Uuid().v1();
   final formKey = GlobalKey<FormState>();
-  final _nombreController = TextEditingController();
-  final _cardController = TextEditingController();
-  final _fechaController = TextEditingController();
-  final _codigoController = TextEditingController();
-  final _saldoController = TextEditingController();
+  late TextEditingController nombreController;
+  late TextEditingController cardController;
+  late TextEditingController fechaController;
+  late TextEditingController codigoController;
+  late TextEditingController saldoController;
   final _formKey = GlobalKey<FormState>();
-  //Agregar aca el correo del usuario
   CollectionReference instancia =
       FirebaseFirestore.instance.collection('users');
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
-  void dispose() {
-    _nombreController.dispose();
-    _cardController.dispose();
-    _fechaController.dispose();
-    _codigoController.dispose();
-    _saldoController.dispose();
-    super.dispose();
+  void initState() {
+    nombreController = TextEditingController();
+    cardController = TextEditingController();
+    fechaController = TextEditingController();
+    codigoController = TextEditingController();
+    saldoController = TextEditingController();
+    super.initState();
   }
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    nombreController.dispose();
+    cardController.dispose();
+    fechaController.dispose();
+    codigoController.dispose();
+    saldoController.dispose();
+    super.dispose();
   }
 
   Future<void> insertarTarjeta() {
@@ -79,11 +83,11 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         .collection('tarjetas')
         .doc(tarjetaId)
         .set({
-          'codigo': _codigoController.text,
-          'fecha': _fechaController.text,
-          'nombre': _nombreController.text,
-          'numero': _cardController.text,
-          'saldo': int.parse(_saldoController.text),
+          'codigo': codigoController.text,
+          'fecha': fechaController.text,
+          'nombre': nombreController.text,
+          'numero': cardController.text,
+          'saldo': int.parse(saldoController.text),
           'tipo': tipo
         })
         .then((value) => print("Tarjeta agregada"))
@@ -312,7 +316,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         right: 50,
       ),
       child: TextFormField(
-        controller: _nombreController,
+        controller: nombreController,
         keyboardType: TextInputType.name,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(fontSize: 17.0),
@@ -351,7 +355,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         right: 50,
       ),
       child: TextFormField(
-        controller: _cardController,
+        controller: cardController,
         inputFormatters: [cardMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 17.0),
@@ -393,7 +397,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         right: 50,
       ),
       child: TextFormField(
-        controller: _fechaController,
+        controller: fechaController,
         inputFormatters: [dateMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 17.0),
@@ -435,7 +439,7 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         right: 50,
       ),
       child: TextFormField(
-        controller: _codigoController,
+        controller: codigoController,
         inputFormatters: [codeMask],
         keyboardType: TextInputType.number,
         style: const TextStyle(fontSize: 17.0),
@@ -477,14 +481,14 @@ class _InfoTarjetaPageState extends State<InfoTarjetaPage> {
         right: 50,
       ),
       child: TextFormField(
-        controller: _saldoController,
+        controller: saldoController,
         keyboardType: TextInputType.number,
         textCapitalization: TextCapitalization.sentences,
         style: const TextStyle(fontSize: 18.0),
         cursorColor: Colors.black,
         decoration: InputDecoration(
-          hintText: 'Saldo',
-          labelText: 'Saldo',
+          hintText: 'Cupo tarjeta',
+          labelText: 'Cupo tarjeta',
           suffixIconColor: Colors.black,
           hintStyle: TextStyle(
             color: Colors.grey.shade500,

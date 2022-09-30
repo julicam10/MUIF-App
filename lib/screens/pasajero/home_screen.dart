@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:muif_app/models/pampa_terminal_polyline.dart';
+import 'package:muif_app/models/terminal__pekin_polyline.dart';
+import 'package:muif_app/models/terminal_pampa_polyline.dart';
 import 'package:muif_app/widgets/drawer_widget.dart';
 import 'package:muif_app/widgets/sheet_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
@@ -23,19 +26,50 @@ class Person {
   Person(this.id, this.position);
 }
 
+bool ruta1 = true;
+bool ruta2 = true;
+bool ruta3 = true;
+
 class _HomePageState extends State<HomePage> {
   List<Person> people = [];
   bool ejecutarLectura = true;
   late GoogleMapController _mapController;
   late StreamSubscription<QuerySnapshot> documentSubscription;
-  // late StreamSubscription<LocationData> subscription;
   final Location _location = Location();
   final String routeNumber = '001';
   final String userId = const Uuid().v1();
   final _initialCameraPosition = const CameraPosition(
     target: LatLng(4.342518, -74.361593),
     zoom: 16,
+    bearing: 70.0,
+    tilt: 20.0,
   );
+  final Set<Polyline> _polyline = {
+    Polyline(
+      visible: ruta1,
+      // onTap: () => ruta1 = false,
+      polylineId: const PolylineId('1'),
+      points: polylineTerminalPampa,
+      color: Colors.green,
+      width: 4,
+    ),
+    Polyline(
+      visible: ruta2,
+      // onTap: () => ruta2 = true,
+      polylineId: const PolylineId('2'),
+      points: polylinePampaTerminal,
+      color: Colors.red,
+      width: 4,
+    ),
+    Polyline(
+      visible: ruta3,
+      // onTap: () => ruta3 = true,
+      polylineId: const PolylineId('3'),
+      points: polylineTerminalPekin,
+      color: Colors.grey,
+      width: 4,
+    ),
+  };
 
   @override
   void initState() {
@@ -65,19 +99,12 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-    // Sincronizar multiusuarios en el map
-    _location.onLocationChanged.listen((LocationData event) {
-      print("${event.latitude}, ${event.longitude}");
-      if (_mapController != null) {
-        // _mapController.animateCamera(
-        //     CameraUpdate.newLatLng(LatLng(event.latitude, event.longitude),),);
-      }
-    });
     documentSubscription = FirebaseFirestore.instance
         .collection('route')
         .doc(routeNumber)
         .collection('people')
-        //Documento de la ruta: 0001
+        .doc('0001')
+        .collection('ubicacion')
         .snapshots()
         .listen((event) {
       people = event.docs
@@ -109,19 +136,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   _removeLocation() {
-    if (documentSubscription != null) {
-      documentSubscription.cancel();
-    }
+    documentSubscription.cancel();
     // if (subscription != null) {
     //   subscription.cancel();
     // }
-    FirebaseFirestore.instance
-        .collection('route')
-        .doc('001')
-        .collection('people')
-        .doc(userId)
-        .delete();
-    setState(() {});
   }
 
   @override
@@ -165,6 +183,7 @@ class _HomePageState extends State<HomePage> {
                             position: e.position,
                           ))
                       .toSet(),
+                  polylines: _polyline,
                   onMapCreated: (controller) => _mapController = controller,
                 ),
               ),

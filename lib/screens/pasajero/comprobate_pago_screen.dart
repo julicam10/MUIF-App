@@ -199,6 +199,8 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                 stream: FirebaseFirestore.instance
                     .collection('route')
                     .doc('001')
+                    .collection('people')
+                    .doc('0001')
                     .collection('pagos')
                     .orderBy('fecha', descending: false)
                     .limitToLast(1)

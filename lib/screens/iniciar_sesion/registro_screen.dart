@@ -24,15 +24,23 @@ class RegistroPageState extends State<RegistroPage> {
   bool selectedValue = true;
   bool selectedValueTwo = true;
   final formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordOneController = TextEditingController();
-  final TextEditingController _passwordTwoController = TextEditingController();
+  late TextEditingController emailControll;
+  late TextEditingController passwordOneController;
+  late TextEditingController passwordTwoController;
+
+  @override
+  void initState() {
+    emailControll = TextEditingController();
+    passwordOneController = TextEditingController();
+    passwordTwoController = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordOneController.dispose();
-    _passwordTwoController.dispose();
+    emailControll.dispose();
+    passwordOneController.dispose();
+    passwordTwoController.dispose();
     super.dispose();
   }
 
@@ -42,8 +50,8 @@ class RegistroPageState extends State<RegistroPage> {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordTwoController.text.trim(),
+            email: emailControll.text.trim(),
+            password: passwordTwoController.text.trim(),
           )
           .then((value) => {
                 _postDetailsToFirestore(email, 'pasajero'),
@@ -66,7 +74,7 @@ class RegistroPageState extends State<RegistroPage> {
     User? user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore instanciaFirebase = FirebaseFirestore.instance;
     await instanciaFirebase.collection('users').doc(user?.uid).set({
-      'correo': _emailController.text.trim(),
+      'correo': emailControll.text.trim(),
       'id': user?.uid,
       'rol': rol,
     });
@@ -155,7 +163,7 @@ class RegistroPageState extends State<RegistroPage> {
                             padding: const EdgeInsets.only(
                                 left: 15, right: 30, top: 25),
                             child: TextFormField(
-                              controller: _emailController,
+                              controller: emailControll,
                               keyboardType: TextInputType.emailAddress,
                               cursorColor: Colors.black,
                               decoration: InputDecoration(
@@ -193,7 +201,7 @@ class RegistroPageState extends State<RegistroPage> {
                           ),
                           child: TextFormField(
                             obscureText: selectedValue,
-                            controller: _passwordOneController,
+                            controller: passwordOneController,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (passwordOne) {
@@ -241,7 +249,7 @@ class RegistroPageState extends State<RegistroPage> {
                           ),
                           child: TextFormField(
                             obscureText: selectedValueTwo,
-                            controller: _passwordTwoController,
+                            controller: passwordTwoController,
                             style: GoogleFonts.openSans(),
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -252,8 +260,8 @@ class RegistroPageState extends State<RegistroPage> {
                               if (passwordTwo.length < 6) {
                                 return 'Tu contraseña debe tener como mínimo 6 caracteres';
                               }
-                              if (_passwordTwoController.text !=
-                                  _passwordOneController.text) {
+                              if (passwordTwoController.text !=
+                                  passwordOneController.text) {
                                 return 'Las contraseñas no coinciden';
                               } else {
                                 return null;

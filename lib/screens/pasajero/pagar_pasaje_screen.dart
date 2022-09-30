@@ -86,6 +86,8 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
   Future<void> _insertarPagoConductor() {
     return instanciaRoute
         .doc('001')
+        .collection('people')
+        .doc('0001')
         .collection('pagos')
         .doc(historialId)
         .set({
