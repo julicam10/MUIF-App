@@ -3,12 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:muif_app/screens/pasajero/seleccionar_info_screen.dart';
 import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 import '../../models/bar_code_text.dart';
 
 class MonederoVirtualPage extends StatefulWidget {
-  const MonederoVirtualPage({Key? key}) : super(key: key);
+  const MonederoVirtualPage({Key? key, this.codigoBuseta}) : super(key: key);
+
+  final codigoBuseta;
 
   @override
   State<MonederoVirtualPage> createState() => _MonederoVirtualPageState();
@@ -24,7 +27,8 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as BarCodeText;
+    print(
+        'Valor arguments - monedero virtual: ${widget.codigoBuseta.toString()}');
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -205,25 +209,37 @@ class _MonederoVirtualPageState extends State<MonederoVirtualPage> {
                   tag: 'boton',
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      onPrimary: args.barCodeText.length == 1
+                      onPrimary: widget.codigoBuseta.length == 1
                           ? Colors.grey
                           : Theme.of(context).colorScheme.primary,
-                      primary: args.barCodeText.length == 1
+                      primary: widget.codigoBuseta.length == 1
                           ? Colors.white
                           : Theme.of(context).colorScheme.secondary,
                       textStyle: GoogleFonts.nunito(
-                        fontSize: args.barCodeText.length == 1 ? 18 : 20,
+                        fontSize: widget.codigoBuseta.length == 1 ? 18 : 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: args.barCodeText.length == 1
+                    child: widget.codigoBuseta.length == 1
                         ? const Text('Primero escanea un QR')
                         : const Text('Continuar'),
                     onPressed: () {
-                      args.barCodeText.length == 1
+                      widget.codigoBuseta.length == 1
                           ? null
-                          : Navigator.pushNamed(
-                              context, '/seleccionarInformacion');
+                          : Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SeleccionarInformacionPage(
+                                  codigoBuseta: widget.codigoBuseta,
+                                ),
+                              ),
+                            );
+                      // Navigator.pushNamed(
+                      //     context,
+                      //     '/seleccionarInformacion',
+                      //     arguments: widget.codigoBuseta,
+                      //   );
                     },
                   ),
                 ),

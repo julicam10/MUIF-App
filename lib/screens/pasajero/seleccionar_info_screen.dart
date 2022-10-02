@@ -1,12 +1,16 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
 class SeleccionarInformacionPage extends StatefulWidget {
-  const SeleccionarInformacionPage({Key? key}) : super(key: key);
+  const SeleccionarInformacionPage({Key? key, this.codigoBuseta})
+      : super(key: key);
+
+  final codigoBuseta;
 
   @override
   State<SeleccionarInformacionPage> createState() =>
@@ -31,8 +35,12 @@ class SeleccionarInformacionPageState
     return menuItems;
   }
 
+  String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
+
   @override
   Widget build(BuildContext context) {
+    print(
+        'Valor arguments - seleccionar info: ${widget.codigoBuseta.toString()}');
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -106,6 +114,8 @@ class SeleccionarInformacionPageState
                           builder: (context) => PagarPasajePage(
                             cantidadPasajes: cantidadPasajes,
                             totalAPagar: cantidadPasajes * 1850,
+                            numeroBuseta: widget.codigoBuseta.toString(),
+                            fecha: fecha,
                           ),
                         ),
                       );

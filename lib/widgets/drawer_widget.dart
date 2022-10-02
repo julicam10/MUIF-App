@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
 import '../models/bar_code_text.dart';
+import '../screens/pasajero/monedero_virtual_screen.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({Key? key}) : super(key: key);
@@ -36,10 +37,13 @@ class SideMenu extends StatelessWidget {
             ),
             title: const TitleText(
                 color: Colors.black, text: 'Monedero virtual', size: 20.0),
-            onTap: () => Navigator.pushNamed(
+            onTap: () => Navigator.push(
               context,
-              '/monederoVirtual',
-              arguments: BarCodeText(barcodeScanRes),
+              MaterialPageRoute(
+                builder: (context) => MonederoVirtualPage(
+                  codigoBuseta: barcodeScanRes,
+                ),
+              ),
             ),
           ),
           Padding(

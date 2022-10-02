@@ -99,12 +99,30 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
+    // documentSubscription = FirebaseFirestore.instance
+    //     .collection('route')
+    //     .doc(routeNumber)
+    //     .collection('people')
+    //     .doc('0001')
+    //     .collection('ubicacion')
+    //     .snapshots()
+    //     .listen((event) {
+    //   people = event.docs
+    //       .map(
+    //         (e) => Person(
+    //           e.id,
+    //           LatLng(e['lat'], e['lng']),
+    //         ),
+    //       )
+    //       .toList();
+    //   setState(() {});
+    // });
     documentSubscription = FirebaseFirestore.instance
         .collection('route')
         .doc(routeNumber)
         .collection('people')
-        .doc('0001')
-        .collection('ubicacion')
+        // .doc('0001')
+        // .collection('ubicacion')
         .snapshots()
         .listen((event) {
       people = event.docs
@@ -117,28 +135,10 @@ class _HomePageState extends State<HomePage> {
           .toList();
       setState(() {});
     });
-    // //Compartir ubicación en tiempo real
-    // Timer.periodic(const Duration(seconds: 20), (timer) {
-    //   subscription = _location.onLocationChanged.listen((LocationData event) {
-    //     FirebaseFirestore.instance
-    //         .collection('route')
-    //         .doc('001')
-    //         .collection('people')
-    //         .doc(userId)
-    //         .set({
-    //       'lat': event.latitude,
-    //       'lng': event.longitude,
-    //     });
-    //     print('${event.latitude}, ${event.longitude}');
-    //   });
-    // });
   }
 
   _removeLocation() {
     documentSubscription.cancel();
-    // if (subscription != null) {
-    //   subscription.cancel();
-    // }
   }
 
   @override

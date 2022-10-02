@@ -5,7 +5,13 @@ import 'package:muif_app/widgets/normal_text_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
 class ComprobantePagoPage extends StatefulWidget {
-  const ComprobantePagoPage({Key? key}) : super(key: key);
+  const ComprobantePagoPage({
+    Key? key,
+    required this.codigoBuseta,
+    required this.cantidad,
+  }) : super(key: key);
+  final String codigoBuseta;
+  final int cantidad;
   static const routeName = '/comprobantePago';
   @override
   State<ComprobantePagoPage> createState() => _ComprobantePagoPageState();
@@ -17,7 +23,7 @@ int totalPagar = 0;
 class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
   @override
   Widget build(BuildContext context) {
-    final info = ModalRoute.of(context)!.settings.arguments;
+    final info = widget.cantidad;
     int infoInt = int.parse(info.toString());
     totalPagar = infoInt * 1850;
     return Scaffold(
@@ -200,7 +206,7 @@ class _ComprobantePagoPageState extends State<ComprobantePagoPage> {
                     .collection('route')
                     .doc('001')
                     .collection('people')
-                    .doc('0001')
+                    .doc(widget.codigoBuseta.toString())
                     .collection('pagos')
                     .orderBy('fecha', descending: false)
                     .limitToLast(1)

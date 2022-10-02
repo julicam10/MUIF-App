@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:muif_app/screens/pasajero/monedero_virtual_screen.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
 import '../../models/bar_code_text.dart';
@@ -16,23 +18,35 @@ class _BarCodePageState extends State<BarCodePage> {
   String _scanBarcode = 'Sin  dirección de la buseta';
 
   Future<void> scanQR() async {
-    String barcodeScanRes = '001';
+    String barcodeScanRes = '';
     try {
-      // barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-      //     '#ff6666', 'Cancel', true, ScanMode.QR);
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamed(
-        context,
-        '/monederoVirtual',
-        arguments: BarCodeText(barcodeScanRes),
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.QR,
       );
+      setState(() {
+        _scanBarcode = barcodeScanRes;
+        print('Valor esnaceado: $_scanBarcode');
+      });
+      navegar();
+      // ignore: use_build_context_synchronously
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
 //barcode scanner flutter ant
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
+  }
+
+  navegar() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MonederoVirtualPage(
+          codigoBuseta: _scanBarcode,
+        ),
+      ),
+    );
   }
 
   @override

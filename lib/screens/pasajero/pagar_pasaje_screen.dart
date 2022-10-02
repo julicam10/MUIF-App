@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:muif_app/screens/pasajero/comprobate_pago_screen.dart';
 import 'package:muif_app/widgets/arrow_back_widget.dart';
 import 'package:muif_app/widgets/normal_text_widget.dart';
 import 'package:muif_app/widgets/title_widget.dart';
@@ -11,20 +11,24 @@ import 'package:uuid/uuid.dart';
 
 class PagarPasajePage extends StatefulWidget {
   const PagarPasajePage(
-      {Key? key, required this.cantidadPasajes, required this.totalAPagar})
+      {Key? key,
+      required this.cantidadPasajes,
+      required this.totalAPagar,
+      required this.numeroBuseta,
+      required this.fecha})
       : super(key: key);
   final int cantidadPasajes;
   final int totalAPagar;
+  final String numeroBuseta;
+  final String fecha;
 
   @override
   State<PagarPasajePage> createState() => _PagarPasajePageState();
 }
 
 final DateTime now = DateTime.now();
-String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
 class _PagarPasajePageState extends State<PagarPasajePage> {
-  String fecha = DateFormat('yyyy-MM-dd – kk:mm').format(now);
   final String historialId = const Uuid().v1();
   User? user = FirebaseAuth.instance.currentUser;
   bool _estaActivo = false;
@@ -65,7 +69,15 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
   }
 
   void _navegar() {
-    Navigator.pushNamed(context, '/comprobantePago', arguments: cantidad);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ComprobantePagoPage(
+          codigoBuseta: widget.numeroBuseta.toString(),
+          cantidad: cantidad,
+        ),
+      ),
+    );
   }
 
   Future<void> _insertarRegistroHistorial() {
@@ -75,7 +87,7 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
         .doc(historialId)
         .set({
           'cantidadPasajes': cantidad,
-          'fecha': fecha,
+          'fecha': widget.fecha,
           'total': totalAPagar,
         })
         .then((value) => print("Pago cargado al conductor"))
@@ -87,11 +99,11 @@ class _PagarPasajePageState extends State<PagarPasajePage> {
     return instanciaRoute
         .doc('001')
         .collection('people')
-        .doc('0001')
+        .doc(widget.numeroBuseta.toString())
         .collection('pagos')
         .doc(historialId)
         .set({
-          'fecha': fecha,
+          'fecha': widget.fecha.toString(),
           'estado': 'Aprobado',
           'numeroPasajes': cantidad,
           'total': totalAPagar,
