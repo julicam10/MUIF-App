@@ -1,7 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:muif_app/screens/iniciar_sesion/eleccion_rol_screen.dart';
-import 'package:muif_app/screens/iniciar_sesion/inicio_screen.dart';
 import 'package:muif_app/screens/screens_screen.dart';
 
 void main() async {

@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   );
   final Set<Polyline> _polyline = {
     Polyline(
-      visible: ruta1,
+      visible: true,
       // onTap: () => ruta1 = false,
       polylineId: const PolylineId('1'),
       points: polylineTerminalPampa,
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
       width: 4,
     ),
     Polyline(
-      visible: ruta2,
+      visible: false,
       // onTap: () => ruta2 = true,
       polylineId: const PolylineId('2'),
       points: polylinePampaTerminal,
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
       width: 4,
     ),
     Polyline(
-      visible: ruta3,
+      visible: false,
       // onTap: () => ruta3 = true,
       polylineId: const PolylineId('3'),
       points: polylineTerminalPekin,
@@ -117,7 +117,6 @@ class _HomePageState extends State<HomePage> {
           .toList();
       setState(() {});
     });
-
     // //Compartir ubicación en tiempo real
     // Timer.periodic(const Duration(seconds: 20), (timer) {
     //   subscription = _location.onLocationChanged.listen((LocationData event) {

@@ -1,5 +1,5 @@
 export 'package:muif_app/screens/iniciar_sesion/recuperar_contrasena_screen.dart';
-export 'package:muif_app/screens/utilidades/inicio_sesion_screen.dart';
+export 'package:muif_app/screens/iniciar_sesion/inicio_sesion_screen.dart';
 export 'package:muif_app/screens/iniciar_sesion/registro_screen.dart';
 export 'package:muif_app/screens/pasajero/home_screen.dart';
 export 'package:muif_app/screens/pasajero/registrar_tarjeta_screen.dart';
