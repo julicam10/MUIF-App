@@ -4,7 +4,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:muif_app/screens/pasajero/monedero_virtual_screen.dart';
 import 'package:muif_app/widgets/title_widget.dart';
 
-import '../../models/bar_code_text.dart';
 import '../../widgets/arrow_back_widget.dart';
 
 class BarCodePage extends StatefulWidget {

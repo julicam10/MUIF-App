@@ -33,7 +33,6 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
 
   @override
   void dispose() {
-    _initLocation();
     super.dispose();
   }
 
@@ -60,9 +59,10 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
             .collection('route')
             .doc('001')
             .collection('people')
-            .doc('0001')
-            .collection('ubicacion')
-            .doc('ubicacion')
+            //cambiar el número de la ruta
+            .doc('569')
+            // .collection('ubicacion')
+            // .doc('ubicacion')
             .set({
           'lat': event.latitude,
           'lng': event.longitude,
@@ -78,7 +78,8 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
         .collection('route')
         .doc('001')
         .collection('people')
-        .doc('0001')
+        //cambiar el número de la ruta
+        .doc('569')
         .collection('ubicacion')
         .doc('ubicacion')
         .delete();

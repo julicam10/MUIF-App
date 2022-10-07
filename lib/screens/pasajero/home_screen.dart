@@ -99,29 +99,11 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-    // documentSubscription = FirebaseFirestore.instance
-    //     .collection('route')
-    //     .doc(routeNumber)
-    //     .collection('people')
-    //     .doc('0001')
-    //     .collection('ubicacion')
-    //     .snapshots()
-    //     .listen((event) {
-    //   people = event.docs
-    //       .map(
-    //         (e) => Person(
-    //           e.id,
-    //           LatLng(e['lat'], e['lng']),
-    //         ),
-    //       )
-    //       .toList();
-    //   setState(() {});
-    // });
     documentSubscription = FirebaseFirestore.instance
         .collection('route')
         .doc(routeNumber)
         .collection('people')
-        // .doc('0001')
+        // .doc('569')
         // .collection('ubicacion')
         .snapshots()
         .listen((event) {
@@ -135,6 +117,24 @@ class _HomePageState extends State<HomePage> {
           .toList();
       setState(() {});
     });
+    // documentSubscription = FirebaseFirestore.instance
+    //     .collection('route')
+    //     .doc(routeNumber)
+    //     .collection('people')
+    //     .doc('576')
+    //     .collection('ubicacion')
+    //     .snapshots()
+    //     .listen((event) {
+    //   people = event.docs
+    //       .map(
+    //         (e) => Person(
+    //           e.id,
+    //           LatLng(e['lat'], e['lng']),
+    //         ),
+    //       )
+    //       .toList();
+    //   setState(() {});
+    // });
   }
 
   _removeLocation() {

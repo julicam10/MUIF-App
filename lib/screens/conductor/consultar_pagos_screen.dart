@@ -35,7 +35,7 @@ class _ConsultarPagosPageState extends State<ConsultarPagosPage> {
           .collection('route')
           .doc('001')
           .collection('people')
-          .doc('0001')
+          .doc('569')
           .collection('pagos')
           .orderBy('fecha', descending: true)
           .snapshots(),
