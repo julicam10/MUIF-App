@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   );
   final Set<Polyline> _polyline = {
     Polyline(
-      visible: true,
+      visible: false,
       // onTap: () => ruta1 = false,
       polylineId: const PolylineId('1'),
       points: polylineTerminalPampa,
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
       width: 4,
     ),
     Polyline(
-      visible: false,
+      visible: true,
       // onTap: () => ruta2 = true,
       polylineId: const PolylineId('2'),
       points: polylinePampaTerminal,
@@ -117,24 +117,6 @@ class _HomePageState extends State<HomePage> {
           .toList();
       setState(() {});
     });
-    // documentSubscription = FirebaseFirestore.instance
-    //     .collection('route')
-    //     .doc(routeNumber)
-    //     .collection('people')
-    //     .doc('576')
-    //     .collection('ubicacion')
-    //     .snapshots()
-    //     .listen((event) {
-    //   people = event.docs
-    //       .map(
-    //         (e) => Person(
-    //           e.id,
-    //           LatLng(e['lat'], e['lng']),
-    //         ),
-    //       )
-    //       .toList();
-    //   setState(() {});
-    // });
   }
 
   _removeLocation() {
@@ -180,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                       .map((e) => Marker(
                             markerId: MarkerId(e.id),
                             position: e.position,
+                            infoWindow: const InfoWindow(title: 'Buseta'),
                           ))
                       .toSet(),
                   polylines: _polyline,

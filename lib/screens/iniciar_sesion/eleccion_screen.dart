@@ -98,10 +98,9 @@ class _EleccionPageState extends State<EleccionPage> {
   }
 
   void _navegar() {
-    Navigator.pushNamed(
+    Navigator.pushReplacementNamed(
       context,
-      '/monederoVirtual',
-      arguments: BarCodeText(barcodeScanRes),
+      '/home',
     );
   }
 

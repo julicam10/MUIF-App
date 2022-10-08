@@ -113,12 +113,6 @@ class _HomeConductorPageState extends State<HomeConductorPage> {
         myLocationEnabled: true,
         myLocationButtonEnabled: true,
         zoomControlsEnabled: false,
-        // markers: people
-        //     .map((e) => Marker(
-        //           markerId: MarkerId(e.id),
-        //           position: e.position,
-        //         ))
-        //     .toSet(),
         onMapCreated: (controller) => _mapController = controller,
       ),
     );
